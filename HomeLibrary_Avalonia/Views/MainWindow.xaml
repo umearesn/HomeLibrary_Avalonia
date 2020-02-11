@@ -8,6 +8,7 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="HomeLibrary_Avalonia" Height="450" Width="800" MinWidth="480" MinHeight="420"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    
     <Grid x:Name="controls">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" MinHeight="70"/>
@@ -28,7 +29,5 @@
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
-
-    <TextBlock Text="{Binding Greeting}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
 </Window>
