@@ -1,31 +1,67 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Web;
+﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Network
 {
     public class Request
     {
-        private const string basement = "https://core.ac.uk:443/api-v2/search/";
+        public Dictionary<string, List<string>> Arguments { get; private set; }
+            = new Dictionary<string, List<string>>()
+            {
+                ["title"] = null,
+                ["description"] = null,
+                ["fullText"] = null,
+                ["language.name"] = null,
+            };
 
-        public string ServerRequest{ get; internal set; }
-
-        //private NameValueCollection queryInfo = HttpUtility.ParseQueryString(string.Empty);
-
-        internal NameValueCollection QueryInfo { get; set; } = HttpUtility.ParseQueryString(string.Empty); 
-
-        public Request()
+        public Request(string[] title, string[] language)
         {
-            ServerRequest = basement;
+            Arguments["title"] = new List<string>(title);
+            Arguments["language.name"] = new List<string>(language);
         }
 
-        public override string ToString()
+        public string ToJsonString()
         {
-            return $"{ServerRequest}{QueryInfo.ToString()}?apiKey=LY3jJXVTbtixDHlyFoSe14hKs7kNQRAm";
+            List<string> query = new List<string>();
+            foreach (var arg in Arguments)
+            {
+                if (arg.Value != null)
+                {
+                    string orString = null;
+                    foreach (var value in arg.Value)
+                    {
+                        if (orString == null)
+                        {
+                            orString = $"{arg.Key}:{value}";
+                        }
+                        else
+                        {
+                            orString += $" or {arg.Key}:{value}";
+                        }
+                    }
+                    
+                    query.Add(orString);
+                }
+            }
+
+            string totalQuery = null;
+            foreach (var orTerm in query)
+            {
+                if (totalQuery == null)
+                {
+                    totalQuery = orTerm;
+                }
+                else
+                {
+                    totalQuery += $" and {orTerm}";
+                }
+            }
+
+            return "[" +
+                   "{" +
+                   $"\"query\": \"{totalQuery}\"" +
+                   "}" +
+                   "]";
         }
     }
 }
