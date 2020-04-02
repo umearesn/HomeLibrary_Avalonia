@@ -35,12 +35,12 @@ namespace Network
         private SearchMode mode;
         
         
-        public string StringRequest()
+        public override string ToString()
         {
             return baseUrl + RequestParts.GetPath(mode, queryArgs) + RequestParts.GetQuery(apiKey);
         }
 
-        private string argumentsCombiner(string argName, List<string> arguments)
+        private static string ArgumentsCombiner(string argName, List<string> arguments)
         {
             string res = $"{argName}:{arguments[0]}";
             for (int i = 1; i < arguments.Count; i++)
@@ -59,7 +59,7 @@ namespace Network
 
         public GetRequest SetTitle(List<string> title)
         {
-            queryArgs.Add(argumentsCombiner("title", title));
+            queryArgs.Add(ArgumentsCombiner("title", title));
             return this;
         }
 
@@ -77,25 +77,25 @@ namespace Network
 
         public GetRequest SetAuthors(List<string> authors)
         {
-            queryArgs.Add(argumentsCombiner("authors",authors));
+            queryArgs.Add(ArgumentsCombiner("authors",authors));
             return this;
         }
 
         public GetRequest SetPublisher(List<string> publisher)
         {
-            queryArgs.Add(argumentsCombiner("publisher" , publisher));
+            queryArgs.Add(ArgumentsCombiner("publisher" , publisher));
             return this;
         }
 
         public GetRequest SetRepoId(List<string> repoId)
         {
-            queryArgs.Add(argumentsCombiner("repositories.id", repoId));
+            queryArgs.Add(ArgumentsCombiner("repositories.id", repoId));
             return this;
         }
 
         public GetRequest SetRepoName(List<string> repoName)
         {
-            queryArgs.Add(argumentsCombiner("repositories.name", repoName));
+            queryArgs.Add(ArgumentsCombiner("repositories.name", repoName));
             return this;
         }
 
@@ -113,13 +113,13 @@ namespace Network
 
         public GetRequest SetIdentifiers(List<string> identifiers)
         {
-            queryArgs.Add(argumentsCombiner("identifiers", identifiers));
+            queryArgs.Add(ArgumentsCombiner("identifiers", identifiers));
             return this;
         }
 
         public GetRequest SetLanguage(List<string> language)
         {
-            queryArgs.Add(argumentsCombiner("language.name", language));
+            queryArgs.Add(ArgumentsCombiner("language.name", language));
             return this;
         }
 
@@ -130,7 +130,7 @@ namespace Network
             {
                 syears.Add(elem.ToString());
             }
-            queryArgs.Add(argumentsCombiner("year", syears));
+            queryArgs.Add(ArgumentsCombiner("year", syears));
             return this;;
         }
     }

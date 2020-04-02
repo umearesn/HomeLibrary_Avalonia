@@ -6,8 +6,6 @@ namespace Network
     
     public interface IRequest<out T>
     {
-        string StringRequest();
-        
         T SetTitle(List<string> title);
 
         T SetDescription(string description);
