@@ -5,7 +5,7 @@ using Network;
 
 namespace HomeLibrary_Avalonia.Models.Response
 {
-    public class ResponseBody
+    public class ResponseBody<T>
     {
 
         [JsonPropertyName("status")]
@@ -15,6 +15,6 @@ namespace HomeLibrary_Avalonia.Models.Response
         public int TotalHits { get; set; }
         
         [JsonPropertyName("data")]
-        public List<ResourceObject> Data { get; set; }
+        public List<T> Data { get; set; }
     }
 }

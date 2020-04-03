@@ -78,33 +78,33 @@ namespace HomeLibrary_Avalonia.Models.Response
         public string DeletedStatus { get; set; }
         
         [JsonPropertyName("indexed")]
-        public int Indexed { get; set; }
+        public int? Indexed { get; set; }
         
         // Throw away
         [JsonPropertyName("metadataUpdated")]
-        public long MetadataUpdated { get; set; }
+        public long? MetadataUpdated { get; set; }
         
         //Throw away
         [JsonPropertyName("depositedDate")]
-        public long DepositedDate { get; set; }
+        public long? DepositedDate { get; set; }
         
         // size in bytes
         [JsonPropertyName("pdfSize")]
-        public long PdfSize { get; set; }
+        public long? PdfSize { get; set; }
         
         [JsonPropertyName("pdfStatus")]
-        public int PdfStatus { get; set; }
+        public int? PdfStatus { get; set; }
         
         [JsonPropertyName("textStatus")]
-        public int TextStatus { get; set; }
+        public int? TextStatus { get; set; }
         
         // Throw  away
         [JsonPropertyName("timestamp")]
-        public long Timestamp { get; set; }
+        public long? Timestamp { get; set; }
         
         // Throw away - fortunately, type is not missed
         [JsonPropertyName("tdmOnly")]
-        public bool TdmOnly { get; set; }
+        public bool? TdmOnly { get; set; }
         
         [JsonPropertyName("pdfOrigin")]
         public string PdfOrigin { get; set; }
