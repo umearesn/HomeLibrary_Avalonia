@@ -1,0 +1,112 @@
+﻿<!-- Need to add class later like this -->
+<!-- x:Class="HomeLibrary_Avalonia.Views.MainWindow" -->
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:HomeLibrary_Avalonia.ViewModels;assembly=HomeLibrary_Avalonia"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="HomeLibrary_Avalonia.Views.SearchWindow"
+        
+        Title="HomeLibrary_Avalonia" Height="450" Width="800" MinWidth="480" MinHeight="420"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized">
+
+  <Grid x:Name="ScreenParts">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="*" MinWidth="150"/>
+      <ColumnDefinition Width="4*" MinWidth="250"/>
+    </Grid.ColumnDefinitions>
+
+    <Grid Grid.Column="1" x:Name="ResultsPanel">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="60"/>
+        <RowDefinition Height="*" MinHeight="260"/>
+        <RowDefinition Height="60"/>
+      </Grid.RowDefinitions>
+      <Grid Grid.Row="0" >
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="60"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Grid.Column="0" x:Name="BackButton"/>
+
+        <Panel Grid.Column="1" Background="Black"/>
+      </Grid>
+
+      <ListBox Grid.Row="1">
+
+      </ListBox>
+
+      <Panel Grid.Row="2"  x:Name="Navigation" Height="60"
+                   VerticalAlignment="Bottom" Background="Black">
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+          <Button x:Name="PrevPage" Width="25" Height="25" Margin="10"/>
+          <TextBox x:Name="CurPage" Width="32" Height="30"
+                   Background="Black" BorderThickness="0"
+                    Text="999" Foreground="White" FontSize="15" TextAlignment="Center"/>
+          <Button x:Name="NextPage" Width="25" Height="25" Margin="10"/>
+        </StackPanel>
+      </Panel>
+    </Grid>
+
+
+
+    <!-- Search panel -->
+    <StackPanel Grid.Column="0" x:Name="SearchPanel" Margin="10, 0, 10, 0" >
+
+      <StackPanel>
+        <TextBlock Height="6"/>
+        <TextBlock x:Name="ModeSelect" Height="24" Text="Режим поиска:"
+                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <ComboBox x:Name="SearchModes" Height="30"
+                  SelectedItem="Articles" IsEnabled="False">
+          <ComboBoxItem Name="Articles" Height="30" IsSelected="True">
+            <TextBlock TextAlignment="Center" Text="Articles"/>
+          </ComboBoxItem>
+          <ComboBoxItem Name="All" Height="30">
+            <TextBlock TextAlignment="Center" Text="All"/>
+          </ComboBoxItem>
+          <ComboBoxItem Name="Journals" Height="30">
+            <TextBlock TextAlignment="Center" Text="Journals"/>
+          </ComboBoxItem>
+          <ComboBoxItem Name="Repositories" Height="30">
+            <TextBlock TextAlignment="Center" Text="Repositories"/>
+          </ComboBoxItem>
+        </ComboBox>
+      </StackPanel>
+
+
+      <StackPanel>
+        <TextBlock Height="6"/>
+        <TextBlock x:Name="TitleSearch" Text="Поиск по названию:" Height="24"
+                    HorizontalAlignment="Center"/>
+        <TextBox  x:Name="TitleQuery" Text="Название" Height="30" />
+      </StackPanel>
+
+      <StackPanel>
+        <TextBlock Height="6"/>
+        <TextBlock x:Name="AuthorsSearch" Text="Поиск по авторам:" Height="24"
+                 VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                 MinHeight="30"
+                 MaxHeight="60"
+                 HorizontalScrollBarVisibility="Disabled">
+          <TextBlock
+                    Text="Extracted Xml"
+                    VerticalAlignment="Center"
+                    TextWrapping="Wrap" />
+        </ScrollViewer>
+        <Grid x:Name="AuthorsAdding">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="30"/>
+          </Grid.ColumnDefinitions>
+          <TextBox Grid.Column="0" x:Name="AuthorName" Text="Автор"/>
+          <Button Grid.Column="1" x:Name="Add" Content="+"/>
+        </Grid>
+      </StackPanel>
+
+    </StackPanel>
+  </Grid>
+</Window>

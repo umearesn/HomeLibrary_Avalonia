@@ -7,6 +7,7 @@
         x:Class="HomeLibrary_Avalonia.Views.MainWindow"
         Icon="/Assets/avalonia-logo.ico"
         Title="HomeLibrary_Avalonia" Height="450" Width="800" MinWidth="480" MinHeight="420"
+        xmlns:views="clr-namespace:HomeLibrary_Avalonia.Views"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
     
     <Grid x:Name="controls">
@@ -22,7 +23,7 @@
             <ColumnDefinition Width="2*" MinWidth="200"/>
             <ColumnDefinition Width="*" MinWidth="20"/>
         </Grid.ColumnDefinitions>
-        <Button Grid.Column="1" Grid.Row="1" x:Name="search" Content="Поиск по статьям" />
+        <Button Grid.Column="1" Grid.Row="1" x:Name="search" Content="Поиск по статьям" Command="{Binding SwitchToSearch}" />
         <Button Grid.Column="3" Grid.Row="1" x:Name="library" Content="Просмотр библиотеки" />
     </Grid>
     
