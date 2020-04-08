@@ -1,13 +1,13 @@
 ﻿<!-- Need to add class later like this -->
 <!-- x:Class="HomeLibrary_Avalonia.Views.MainWindow" -->
-<Window xmlns="https://github.com/avaloniaui"
+<Frame xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:HomeLibrary_Avalonia.ViewModels;assembly=HomeLibrary_Avalonia"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="HomeLibrary_Avalonia.Views.SearchWindow"
-        
+        xmlns:templates="clr-namespace:HomeLibrary_Avalonia.Views"
         Title="HomeLibrary_Avalonia" Height="450" Width="800" MinWidth="480" MinHeight="420"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
@@ -34,9 +34,24 @@
         <Panel Grid.Column="1" Background="Black"/>
       </Grid>
 
-      <ListBox Grid.Row="1">
 
-      </ListBox>
+      <ScrollViewer Grid.Row="1"
+                    HorizontalScrollBarVisibility="Disabled"
+                    VerticalScrollBarVisibility="Auto">
+        <StackPanel>
+          <templates:ArticlePanel />
+          <templates:ArticlePanel/>
+          <templates:ArticlePanel/>
+          <templates:ArticlePanel/>
+          <templates:ArticlePanel/>
+          <templates:ArticlePanel/>
+          <templates:ArticlePanel/>
+          <templates:ArticlePanel/>
+          <templates:ArticlePanel/>
+          <templates:ArticlePanel/>
+          <templates:ArticlePanel/>
+        </StackPanel>
+      </ScrollViewer>
 
       <Panel Grid.Row="2"  x:Name="Navigation" Height="60"
                    VerticalAlignment="Bottom" Background="Black">
@@ -109,4 +124,6 @@
 
     </StackPanel>
   </Grid>
-</Window>
+</Frame>
+
+<!-- ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled"-->
