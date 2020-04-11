@@ -119,7 +119,7 @@ namespace Network
 
         public GetRequest SetLanguage(List<string> language)
         {
-            queryArgs.Add(ArgumentsCombiner("language.name", language));
+            queryArgs.Add(ArgumentsCombiner("language", language));
             return this;
         }
 

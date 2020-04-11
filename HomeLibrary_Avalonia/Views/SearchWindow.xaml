@@ -1,6 +1,4 @@
-﻿<!-- Need to add class later like this -->
-<!-- x:Class="HomeLibrary_Avalonia.Views.MainWindow" -->
-<Window xmlns="https://github.com/avaloniaui"
+﻿<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:HomeLibrary_Avalonia.ViewModels;assembly=HomeLibrary_Avalonia"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -23,23 +21,25 @@
       <ColumnDefinition Width="4*" MinWidth="250"/>
     </Grid.ColumnDefinitions>
 
+    <!-- Panel with search results. -->
     <Grid Grid.Column="1" x:Name="ResultsPanel">
       <Grid.RowDefinitions>
         <RowDefinition Height="60"/>
         <RowDefinition Height="*" MinHeight="260"/>
         <RowDefinition Height="60"/>
       </Grid.RowDefinitions>
+
+      <!-- Top panel with previous page button -->
       <Grid Grid.Row="0" >
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="60"/>
           <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-
         <Button Grid.Column="0" x:Name="BackButton"/>
-
         <Panel Grid.Column="1" Background="Black"/>
       </Grid>
 
+      <!-- List with search responses. -->
       <ScrollViewer Grid.Row="1"
                     HorizontalScrollBarVisibility="Disabled"
                     VerticalScrollBarVisibility="Auto">
@@ -70,6 +70,7 @@
         </ListBox>
       </ScrollViewer>
 
+      <!-- Bottom panel with navigation panels. -->
       <Panel Grid.Row="2"  x:Name="Navigation" Height="60"
                    VerticalAlignment="Bottom" Background="Black">
         <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
@@ -84,9 +85,10 @@
 
 
 
-    <!-- Search panel -->
+    <!-- Search request builder. -->
     <StackPanel Grid.Column="0" x:Name="SearchPanel" Margin="10, 0, 10, 0" >
 
+      <!-- Search mode choice. -->
       <StackPanel>
         <TextBlock Height="6"/>
         <TextBlock x:Name="ModeSelect" Height="24" Text="Режим поиска:"
@@ -109,6 +111,7 @@
       </StackPanel>
 
 
+      <!-- Title field. -->
       <StackPanel>
         <TextBlock Height="6"/>
         <TextBlock x:Name="TitleSearch" Text="Поиск по названию:" Height="24"
@@ -116,6 +119,7 @@
         <TextBox  x:Name="TitleQuery" Text="Название" Height="30" />
       </StackPanel>
 
+      <!-- Authors field. -->
       <StackPanel>
         <TextBlock Height="6"/>
         <TextBlock x:Name="AuthorsSearch" Text="Поиск по авторам:" Height="24"

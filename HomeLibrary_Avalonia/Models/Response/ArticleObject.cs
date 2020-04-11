@@ -5,20 +5,19 @@ namespace HomeLibrary_Avalonia.Models.Response
 {
     public class ArticleObject
     {
-        private int id;
         
         [JsonPropertyName("id")]
         public string Id { get; set; } // документация врет, там стринга
-        
+
         [JsonPropertyName("title")]
-        public string Title { get; set; }
+        public string Title { get; set; } = "default title";
         
         [JsonPropertyName("topics")]
         public List<string> Topics { get; set; }
-        
+
         [JsonPropertyName("authors")]
         public List<string> Authors { get; set; }
-        
+
         [JsonPropertyName("citations")]
         public List<Citation> Citations { get; set; }
         
@@ -73,7 +72,7 @@ namespace HomeLibrary_Avalonia.Models.Response
         [JsonPropertyName("year")]
         public int Year { get; set; }
         
-        // IDK what's the difference, it's is given in the manual.
+        // IDK what's the difference of the two properties below, it's is given in the manual.
         
         /// <summary>
         /// URLs of the fulltext version of this article.

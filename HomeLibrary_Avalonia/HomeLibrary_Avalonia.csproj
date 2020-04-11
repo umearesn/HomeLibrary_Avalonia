@@ -12,6 +12,11 @@
             <SubType>Designer</SubType>
         </AvaloniaResource>
         <AvaloniaResource Include="Assets\**" />
+        <AvaloniaResource Remove="Views\SearchWindow.xaml" />
+        <AvaloniaResource Remove="Views\Templates\ArticlePanel.xaml" />
+        <None Remove="Views\SearchWindow.xaml" />
+        <None Remove="Views\Templates\ArticlePanel.xaml" />
+        <Folder Include="Models\LocalStore" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.9.0" />
@@ -19,5 +24,20 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.0" />
         <PackageReference Include="Elasticsearch.Net" Version="7.6.0" />
         <PackageReference Include="NEST" Version="7.6.0" />
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Views\SearchWindow.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Views\Templates\ArticlePanel.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
+      <Compile Update="Views\SearchWindow.xaml.cs">
+        <DependentUpon>SearchWindow.xaml</DependentUpon>
+      </Compile>
     </ItemGroup>
 </Project>
