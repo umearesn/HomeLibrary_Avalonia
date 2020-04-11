@@ -1,10 +1,15 @@
-﻿<UserControl xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="60"
-             x:Class="HomeLibrary_Avalonia.Views.ArticlePanel">
+﻿<Window xmlns="https://github.com/avaloniaui"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+           xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+           xmlns:local="clr-namespace:HomeLibrary_Avalonia.Models.Response"
+           xmlns:view_models="clr-namespace:HomeLibrary_Avalonia.ViewModels">
 
+  <Window.Resources>
+    <view_models:AuthorsAsString x:Key="authors_conv"/>
+  </Window.Resources>
+
+  <DataTemplate DataType="{x:Type local:ArticleObject}">
     <Button HorizontalContentAlignment="Stretch">
       <Grid>
         <Grid.RowDefinitions>
@@ -15,15 +20,17 @@
           <ColumnDefinition Width="*"/>
           <ColumnDefinition Width="30"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="Let's put some text" 
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Title}"
                    HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
-        <TextBlock Grid.Row="1" Grid.Column="0" Text="Here we are having some authors of more. Even more. I like a lot of authors.
-                   Or may be like this. Is there a new line?"
+        <TextBlock Grid.Row="1" Grid.Column="0"
+                   Text="{Binding Authors, Converter={StaticResource authors_conv}}"
                    HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
         <Button Grid.Row="0" Grid.Column="1" Height="23" Width="23" Content=":"
                 VerticalAlignment="Top" HorizontalAlignment="Right"/>
       </Grid>
     </Button>
-</UserControl>
+  </DataTemplate>
+
+</Window>
 
 <!--Width="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ActualWidth}"-->

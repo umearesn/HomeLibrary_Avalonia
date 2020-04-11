@@ -1,6 +1,7 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using HomeLibrary_Avalonia.ViewModels;
 
 namespace HomeLibrary_Avalonia.Views
 {
@@ -8,7 +9,7 @@ namespace HomeLibrary_Avalonia.Views
     {
         public SearchWindow()
         {
-            //DataContext = new SearchWindow();
+            DataContext = new SearchVindowViewModel();
             this.InitializeComponent();
 #if DEBUG
             this.AttachDevTools();

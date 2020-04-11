@@ -1,16 +1,22 @@
 ﻿<!-- Need to add class later like this -->
 <!-- x:Class="HomeLibrary_Avalonia.Views.MainWindow" -->
-<Frame xmlns="https://github.com/avaloniaui"
+<Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="clr-namespace:HomeLibrary_Avalonia.ViewModels;assembly=HomeLibrary_Avalonia"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HomeLibrary_Avalonia.Models.Response"
+        xmlns:view_models="clr-namespace:HomeLibrary_Avalonia.ViewModels"
+        xmlns:templates="clr-namespace:HomeLibrary_Avalonia.Views"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="HomeLibrary_Avalonia.Views.SearchWindow"
-        xmlns:templates="clr-namespace:HomeLibrary_Avalonia.Views"
         Title="HomeLibrary_Avalonia" Height="450" Width="800" MinWidth="480" MinHeight="420"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
 
+  <Window.Resources>
+    <view_models:AuthorsAsString x:Key="authors_conv"/>
+  </Window.Resources>
+  
   <Grid x:Name="ScreenParts">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" MinWidth="150"/>
@@ -34,23 +40,34 @@
         <Panel Grid.Column="1" Background="Black"/>
       </Grid>
 
-
       <ScrollViewer Grid.Row="1"
                     HorizontalScrollBarVisibility="Disabled"
                     VerticalScrollBarVisibility="Auto">
-        <StackPanel>
-          <templates:ArticlePanel />
-          <templates:ArticlePanel/>
-          <templates:ArticlePanel/>
-          <templates:ArticlePanel/>
-          <templates:ArticlePanel/>
-          <templates:ArticlePanel/>
-          <templates:ArticlePanel/>
-          <templates:ArticlePanel/>
-          <templates:ArticlePanel/>
-          <templates:ArticlePanel/>
-          <templates:ArticlePanel/>
-        </StackPanel>
+        <ListBox x:Name="search_results" Items="{Binding SearchResult}">
+          <ListBox.ItemTemplate>
+            <DataTemplate DataType="{x:Type local:ArticleObject}">
+              <Button HorizontalContentAlignment="Stretch">
+                <Grid>
+                  <Grid.RowDefinitions>
+                    <RowDefinition Height="*" MinHeight="30"/>
+                    <RowDefinition Height="*" MinHeight="30"/>
+                  </Grid.RowDefinitions>
+                  <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="30"/>
+                  </Grid.ColumnDefinitions>
+                  <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Title}"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
+                  <TextBlock Grid.Row="1" Grid.Column="0"
+                             Text="{Binding Authors, Converter={StaticResource authors_conv}}"
+                             HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
+                  <Button Grid.Row="0" Grid.Column="1" Height="23" Width="23" Content=":"
+                          VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                </Grid>
+              </Button>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
       </ScrollViewer>
 
       <Panel Grid.Row="2"  x:Name="Navigation" Height="60"
@@ -124,6 +141,6 @@
 
     </StackPanel>
   </Grid>
-</Frame>
+</Window>
 
 <!-- ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled"-->
