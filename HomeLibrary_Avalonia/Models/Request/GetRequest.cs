@@ -37,7 +37,8 @@ namespace Network
         
         public override string ToString()
         {
-            return baseUrl + RequestParts.GetPath(mode, queryArgs) + RequestParts.GetQuery(apiKey);
+            return "https://core.ac.uk:443" + RequestParts.GetPath(mode, queryArgs) + RequestParts.GetQuery("LY3jJXVTbtixDHlyFoSe14hKs7kNQRAm"); 
+            //return baseUrl + RequestParts.GetPath(mode, queryArgs) + RequestParts.GetQuery(apiKey);
         }
 
         private static string ArgumentsCombiner(string argName, List<string> arguments)

@@ -4,7 +4,9 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
+using Avalonia.ReactiveUI;
 using HomeLibrary_Avalonia.ViewModels;
+using ReactiveUI;
 
 namespace HomeLibrary_Avalonia
 {
@@ -29,7 +31,7 @@ namespace HomeLibrary_Avalonia
 
         public bool Match(object data)
         {
-            return data is ViewModelBase;
+            return data is ReactiveWindow<ReactiveObject>;
         }
     }
 }

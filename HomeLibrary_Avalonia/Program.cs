@@ -19,12 +19,6 @@ namespace HomeLibrary_Avalonia
         {
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             GetRequest.InitRequest();
-            // Some demo material, dont't pay attention.
-            /*string r = new GetRequest(SearchMode.all)
-                .SetTitle(new List<string>() {"psychology", "maths"})
-                .SetLanguage(new List<string>(){"English"})
-                .StringRequest();
-            Console.WriteLine(r);*/
             
         }
 

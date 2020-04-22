@@ -1,0 +1,37 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:views="clr-namespace:HomeLibrary_Avalonia.Views"
+        xmlns:reactiveUi="http://reactiveui.net"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        Title="HomeLibrary_Avalonia" Height="450" Width="800" MinWidth="480" MinHeight="420"
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        x:Class="HomeLibrary_Avalonia.Views.HostingView">
+
+  <Grid x:Name="HostingScreen">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="*" MinHeight="320"/>
+      <RowDefinition Height="60"/>
+    </Grid.RowDefinitions>
+
+    <reactiveUi:RoutedViewHost Grid.Row="0" Router="{Binding Router}">
+      <reactiveUi:RoutedViewHost.DefaultContent>
+        <views:SearchView/>
+      </reactiveUi:RoutedViewHost.DefaultContent>
+    </reactiveUi:RoutedViewHost>
+
+    <!-- Bottom panel with navigation panels. -->
+    <Panel Grid.Row="1" Height="60"
+                 VerticalAlignment="Bottom" Background="Black">
+      <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+        <Button Grid.Column="1" Grid.Row="1"
+                Width="150" Margin="5"
+                Content="Поиск по статьям" Command="{Binding GoSearching}"/>
+        <Button Grid.Column="3" Grid.Row="1"
+                Width="150" Margin="5"
+                Content="Просмотр библиотеки" />
+      </StackPanel>
+    </Panel>
+  </Grid>
+</Window>
