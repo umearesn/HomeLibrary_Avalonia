@@ -35,20 +35,23 @@ namespace Network
         private SearchMode mode;
         
         
-        public override string ToString()
+        public string GetAsString(int page = 1)
         {
-            return "https://core.ac.uk:443" + RequestParts.GetPath(mode, queryArgs) + RequestParts.GetQuery("LY3jJXVTbtixDHlyFoSe14hKs7kNQRAm"); 
+            return "https://core.ac.uk:443" + RequestParts.GetPath(mode, queryArgs) + RequestParts.GetQuery("LY3jJXVTbtixDHlyFoSe14hKs7kNQRAm", page); 
             //return baseUrl + RequestParts.GetPath(mode, queryArgs) + RequestParts.GetQuery(apiKey);
         }
 
         private static string ArgumentsCombiner(string argName, List<string> arguments)
         {
-            string res = $"{argName}:{arguments[0]}";
-            for (int i = 1; i < arguments.Count; i++)
+            string res = "";
+            if (arguments != null && arguments.Count > 0)
             {
-                res += $" or {argName}:{arguments[i]}";
+                res = $"{argName}:{arguments[0]}";
+                for (int i = 1; i < arguments.Count; i++)
+                {
+                    res += $" or {argName}:{arguments[i]}";
+                }
             }
-
             return res;
         }
         
@@ -78,7 +81,16 @@ namespace Network
 
         public GetRequest SetAuthors(List<string> authors)
         {
-            queryArgs.Add(ArgumentsCombiner("authors",authors));
+            using (StreamWriter sw = new StreamWriter("SetAuthors.txt", true))
+            {
+                sw.WriteLine("Entered");
+                sw.WriteLine(authors.Count);
+                foreach (var item in authors)
+                {
+                    sw.WriteLine(item);
+                }
+            }
+            if(authors.Count > 0) queryArgs.Add(ArgumentsCombiner("authors",authors));
             return this;
         }
 
