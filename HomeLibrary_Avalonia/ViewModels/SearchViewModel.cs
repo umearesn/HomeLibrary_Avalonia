@@ -25,6 +25,7 @@ using System.Net;
 using System.Text.Json;
 using DynamicData.Binding;
 using System.Collections.ObjectModel;
+using HomeLibrary_Avalonia.Services;
 
 namespace HomeLibrary_Avalonia.ViewModels
 {
@@ -78,41 +79,17 @@ namespace HomeLibrary_Avalonia.ViewModels
 
             StartSearching = ReactiveCommand.Create(async () =>
             {
+                var responseMessage 
+                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page, TitleField, authorsQuerySource.Items);
 
-                var responseMessage = await repo.GetArticlesAsync(
-                    BuildRequest(SearchMode.articles, TitleField, authorsQuerySource.Items));
-                
-                //ResponseBody<ArticleObject> resp = JsonSerializer.Deserialize<ResponseBody<ArticleObject>>(responseMessage);
                 if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
                 {
                     searchResultSource.Clear();
-                    //SearchResultList = responseMessage.Item2.Data;
                     foreach (var item in responseMessage.Item2.Data)
                     {
                         searchResultSource.Add(item);
                     }
-                    //searchResultSource = new SourceList<ArticleObject>(responseMessage.Item2.Data);
                 }
-
-                using (StreamWriter sw = new StreamWriter("response.txt", true))
-                {
-                    sw.WriteLine(responseMessage.Item1);
-                    sw.WriteLine(responseMessage.Item1 == HttpStatusCode.OK.ToString());
-                    sw.WriteLine("what is here?");
-                    foreach (var item in responseMessage.Item2.Data)
-                    {
-                        sw.WriteLine(item.Title);
-                    }
-                }
-
-                /*using (StreamWriter sw = new StreamWriter("response.txt", true))
-                {
-                    sw.WriteLine("are we reaching that?");
-                    foreach (var item in SearchResultList)
-                    {
-                        sw.WriteLine(item.Title);
-                    }
-                }*/
             });
 
             AddAuthor = ReactiveCommand.Create(() =>
@@ -122,45 +99,27 @@ namespace HomeLibrary_Avalonia.ViewModels
                     authorsQuerySource.Add(AuthorField);
                     AuthorField = "";
                 }
+            });
 
+            GoNext = ReactiveCommand.Create(async () =>
+            {
+                Page++;
 
+                var responseMessage 
+                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page, TitleField, authorsQuerySource.Items);
 
-                //ListQueryAuthors = new List<string>() { "text"};
-                using (StreamWriter sw = new StreamWriter("add_author_1.txt", true))
+                if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
                 {
-                    sw.WriteLine("Checking authorsQuery!");
-                    foreach(var item in authorsQuery)
+                    searchResultSource.Clear();
+                    foreach (var item in responseMessage.Item2.Data)
                     {
-                        sw.WriteLine(item);
+                        searchResultSource.Add(item);
                     }
-                    /*foreach (var item in authorsQuerySource)
-                    {
-                        sw.WriteLine(item);
-                    }*/
-                    sw.WriteLine();
                 }
             });
         }
 
-        public List<ArticleObject> SearchResultList { get; set; } = new List<ArticleObject> {
-            new ArticleObject()
-            {
-                Title = "some title",
-                Authors = new List<string> { "some authors" }
-            },
-
-            new ArticleObject()
-            {
-                Title = "another title",
-                Authors = new List<string> { "second author", "third author" }
-            },
-
-            new ArticleObject()
-            {
-                Title = "third title",
-                Authors = new List<string> { "forth author", "fifth author" }
-            }
-        };
+        public int Page { get; private set; } = 1;
 
         public CoreRepository repo = new CoreRepository();
 
@@ -171,6 +130,8 @@ namespace HomeLibrary_Avalonia.ViewModels
         private SourceList<ArticleObject> searchResultSource
             = new SourceList<ArticleObject>();
 
+        // Navigation
+        public ReactiveCommand<Unit, Task> GoNext { get; }
 
         //
 
@@ -191,12 +152,5 @@ namespace HomeLibrary_Avalonia.ViewModels
 
         public ReactiveCommand<Unit, Task> StartSearching { get; }
 
-        public string BuildRequest(SearchMode mode, string title = null, IEnumerable<string> authors = null)
-        {
-            GetRequest request = new GetRequest(mode);
-            if (title != null) request.SetTitle(new List<string>() { title });
-            if (authors != null) request.SetAuthors(new List<string>(authors));
-            return request.ToString();
-        }
     }
 }
