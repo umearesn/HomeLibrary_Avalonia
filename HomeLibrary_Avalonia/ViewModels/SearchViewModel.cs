@@ -104,7 +104,7 @@ namespace HomeLibrary_Avalonia.ViewModels
                     //NULL REFERENCE!!!!!!
                     foreach (var item in responseMessage.Item2.Data)
                     {
-                        searchResultSource.Add(item);
+                        searchResultSource.Add(new ArticleViewModel(item));
                     }
                     IsNavigationEnabled = true;
                     if (Page == 1)
@@ -134,7 +134,7 @@ namespace HomeLibrary_Avalonia.ViewModels
                     // NULL REFERENCE
                     foreach (var item in responseMessage.Item2.Data)
                     {
-                        searchResultSource.Add(item);
+                        searchResultSource.Add(new ArticleViewModel(item));
                     }
                     Page++;
                     if (Page == 1)
@@ -171,7 +171,7 @@ namespace HomeLibrary_Avalonia.ViewModels
                     // NULL REFERENCE
                     foreach (var item in responseMessage.Item2.Data)
                     {
-                        searchResultSource.Add(item);
+                        searchResultSource.Add(new ArticleViewModel(item));
                     }
                     Page--;
                     if (Page == 1)
@@ -234,10 +234,10 @@ namespace HomeLibrary_Avalonia.ViewModels
 
         // Results
 
-        public ReadOnlyObservableCollection<ArticleObject> searchResult;
+        public ReadOnlyObservableCollection<ArticleViewModel> searchResult;
 
-        private SourceList<ArticleObject> searchResultSource
-            = new SourceList<ArticleObject>();
+        private SourceList<ArticleViewModel> searchResultSource
+            = new SourceList<ArticleViewModel>();
 
         // Navigation
         public ReactiveCommand<Unit, Task> GoNext { get; }

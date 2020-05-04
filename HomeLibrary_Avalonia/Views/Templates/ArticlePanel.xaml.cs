@@ -1,22 +1,22 @@
 ﻿using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
 using HomeLibrary_Avalonia.Models.Response;
+using HomeLibrary_Avalonia.ViewModels;
 
-namespace HomeLibrary_Avalonia.Views
+namespace HomeLibrary_Avalonia.Views.Templates
 {
-    public class ArticlePanel : UserControl
+    public class ArticlePanel : ReactiveUserControl<ArticleViewModel>
     {
-        private ArticleObject article;
+
+        private Button addToLibrary;
 
         public ArticlePanel()
         {
-            this.InitializeComponent();
-        }
-
-        private void InitializeComponent()
-        {
             AvaloniaXamlLoader.Load(this);
+
+            addToLibrary = this.Find<Button>("AddToLibrary");
         }
     }
 }
