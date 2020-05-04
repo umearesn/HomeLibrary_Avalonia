@@ -12,6 +12,8 @@
             <SubType>Designer</SubType>
         </AvaloniaResource>
         <AvaloniaResource Include="Assets\**" />
+        <AvaloniaResource Remove="Views\LocalLibraryView.xaml" />
+        <None Remove="Views\LocalLibraryView.xaml" />
         <Folder Include="Models\LocalStore" />
     </ItemGroup>
     <ItemGroup>
@@ -38,8 +40,16 @@
       </EmbeddedResource>
     </ItemGroup>
     <ItemGroup>
+      <EmbeddedResource Include="Views\LocalLibraryView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+    <ItemGroup>
       <Compile Update="Views\HostingView.xaml.cs">
         <DependentUpon>HostingView.xaml</DependentUpon>
+      </Compile>
+      <Compile Update="Views\LocalLibraryView.xaml.cs">
+        <DependentUpon>LocalLibraryView.xaml</DependentUpon>
       </Compile>
       <Compile Update="Views\SearchView.xaml.cs">
         <DependentUpon>SearchView.xaml</DependentUpon>

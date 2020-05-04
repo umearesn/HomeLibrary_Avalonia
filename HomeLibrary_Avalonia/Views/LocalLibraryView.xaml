@@ -1,16 +1,27 @@
 ﻿<UserControl xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:HomeLibrary_Avalonia.ViewModels;assembly=HomeLibrary_Avalonia"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HomeLibrary_Avalonia.Models.Response"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        x:Class="HomeLibrary_Avalonia.Views.SearchView">
-
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:HomeLibrary_Avalonia.ViewModels;assembly=HomeLibrary_Avalonia"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:HomeLibrary_Avalonia.Models.Response"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HomeLibrary_Avalonia.Views.LocalLibraryView">
+  
   <UserControl.Resources>
     <vm:AuthorsAsString x:Key="authors_conv"/>
+    <FontFamily x:Key="Serif">
+      <x:Arguments>
+        <x:String>resm:HomeLibrary_Avalonia.Fonts.NotoSerD:\Programming\Projects\Course work\HomeLibrary_Avalonia\HomeLibrary_Avalonia\Repositories\CoreRepository.csif-hinted.*.ttf?assembly=HomeLibrary_Avalonia#Serif</x:String>
+      </x:Arguments>
+    </FontFamily>
   </UserControl.Resources>
 
+  <UserControl.Styles>
+    <Style Selector="TextBlock">
+      <Setter Property="FontFamily" Value="{StaticResource Serif}"/>
+    </Style>
+  </UserControl.Styles>
+  
   <Grid x:Name="ScreenParts">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="*" MinWidth="150"/>
@@ -21,7 +32,6 @@
     <Grid Grid.Column="1" x:Name="ResultsPanel">
       <Grid.RowDefinitions>
         <RowDefinition Height="60"/>
-        <RowDefinition Height="Auto"/>
         <RowDefinition Height="*" MinHeight="320"/>
       </Grid.RowDefinitions>
 
@@ -30,7 +40,7 @@
                    VerticalAlignment="Bottom" Background="Black">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
           <Button x:Name="PrevPage" Width="25" Height="25" Margin="10"/>
-          <StackPanel x:Name="NavigationPanel" Orientation="Horizontal">
+          <StackPanel Orientation="Horizontal">
             <TextBlock x:Name="CurPage" Width="32" Height="30"
                        Background="Black"
                        Text="999" Foreground="White" FontSize="15" TextAlignment="Center"/>
@@ -38,17 +48,18 @@
           </StackPanel>
         </StackPanel>
       </Panel>
-            
+
       <!-- List with search responses. -->
-      <ScrollViewer Grid.Row="2"
+      <ScrollViewer Grid.Row="1"
                     HorizontalScrollBarVisibility="Disabled"
                     VerticalScrollBarVisibility="Auto">
-        <ListBox x:Name="SearchResultList">
+        <ListBox x:Name="LocalArticlesList">
           <ListBox.ItemTemplate>
             <DataTemplate DataType="{x:Type local:ArticleObject}">
               <Button HorizontalContentAlignment="Stretch">
                 <Grid>
                   <Grid.RowDefinitions>
+                    <RowDefinition Height="*" MinHeight="30"/>
                     <RowDefinition Height="*" MinHeight="30"/>
                     <RowDefinition Height="*" MinHeight="30"/>
                   </Grid.RowDefinitions>
@@ -57,14 +68,17 @@
                     <ColumnDefinition Width="30"/>
                   </Grid.ColumnDefinitions>
                   <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Title}"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
+                           HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
                   <TextBlock Grid.Row="1" Grid.Column="0"
                              Text="{Binding Authors, Converter={StaticResource authors_conv}}"
                              HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
-                  <Button Grid.Row="0" Grid.Column="1" x:Name="AddToLibrary"
-                          Command="{Binding ToTheLibrary}"
-                          Height="23" Width="23" Content=":"
+                  <Button Grid.Row="0" Grid.Column="1" Height="23" Width="23" Content=":"
                           VerticalAlignment="Top" HorizontalAlignment="Right"/>
+                  <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
+                    <TextBlock Text="Доступен ли текст?" HorizontalAlignment="Left"/>
+                    <CheckBox x:Name="IsFulltextAvailable" IsEnabled="False" HorizontalAlignment="Right"/>
+                  </StackPanel>
+                  
                 </Grid>
               </Button>
             </DataTemplate>
@@ -77,21 +91,6 @@
 
     <!-- Search request builder. -->
     <StackPanel Grid.Column="0" x:Name="SearchPanel" Margin="10, 0, 10, 0" >
-
-      <!-- Search mode choice. -->
-      <StackPanel>
-        <TextBlock Height="6"/>
-        <TextBlock Height="24" Text="Режим поиска:"
-                       VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        <ComboBox x:Name="ModeSelect" Height="30"
-                  SelectedIndex="1" IsEnabled="False">
-          <ComboBoxItem Height="30">All</ComboBoxItem>
-          <ComboBoxItem Height="30">Articles</ComboBoxItem>
-          <ComboBoxItem Height="30">Journals</ComboBoxItem>
-          <ComboBoxItem Height="30">Repositories</ComboBoxItem>
-        </ComboBox>
-      </StackPanel>
-
 
       <!-- Title field. -->
       <StackPanel>
@@ -109,18 +108,19 @@
         <TextBox x:Name="AuthorsQuery" Height="30" />
       </StackPanel>
 
+      <!-- Fulltext field. -->
+      <StackPanel>
+        <TextBlock Height="6"/>
+        <TextBlock Text="Поиск по тексту статьи:" Height="24"
+                    HorizontalAlignment="Center"/>
+        <TextBox x:Name="FulltextQuery" Height="30" />
+      </StackPanel>
+      
       <TextBlock Height="6"/>
       <Button x:Name="StartSearch"
               Width="150" Height="60" Content="Go searching!"/>
-
-      <TextBlock Height="6"/>
-      <TextBlock x:Name="SearchStatus"/>
       
     </StackPanel>
   </Grid>
   
 </UserControl>
-
-<!-- ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.HorizontalScrollBarVisibility="Disabled"-->
-<!-- Text="{Binding QueryAuthors, Converter={StaticResource authors_query_conv}}" -->
-

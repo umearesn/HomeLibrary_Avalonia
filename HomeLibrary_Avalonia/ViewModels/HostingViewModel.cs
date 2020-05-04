@@ -23,12 +23,17 @@ namespace HomeLibrary_Avalonia.ViewModels
 
         public ReactiveCommand<Unit, IRoutableViewModel> GoSearching { get; }
 
+        public ReactiveCommand<Unit, IRoutableViewModel> GoLocal { get; }
+
         public HostingViewModel()
         {
             Router.Navigate.Execute(new SearchViewModel());
 
             GoSearching = ReactiveCommand.CreateFromObservable(
                 () => Router.Navigate.Execute(new SearchViewModel(this)));
+
+            GoLocal = ReactiveCommand.CreateFromObservable(
+                () => Router.Navigate.Execute(new LocalLibraryViewModel(this)));
         }
     }
 }

@@ -30,7 +30,7 @@
                 Content="Поиск по статьям" Command="{Binding GoSearching}"/>
         <Button Grid.Column="3" Grid.Row="1"
                 Width="150" Margin="5"
-                Content="Просмотр библиотеки" />
+                Content="Просмотр библиотеки" Command="{Binding GoLocal}"/>
       </StackPanel>
     </Panel>
   </Grid>

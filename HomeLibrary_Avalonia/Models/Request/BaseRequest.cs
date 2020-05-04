@@ -41,7 +41,7 @@ namespace Network
             return res;
         }
         
-        public override string ToString()
+        public string GetAsString()
         {
             return baseUrl + RequestParts.GetPath(SearchMode.articles, queryArgs) + RequestParts.GetQuery(apiKey);
         }

@@ -12,60 +12,68 @@ namespace HomeLibrary_Avalonia.Views
 {
     public class SearchView : ReactiveUserControl<SearchViewModel>
     {
+        private TextBlock searchStatus;
+
+        private StackPanel navigationPanel;
+        private Button prevPage;
 
         private TextBox titleQuery;
 
         // Authors adding block
-        private ListBox authorsQuery;
-        private TextBox newAuthor;
-        private Button addAuthorButton;
+        private TextBox authorsQuery;
 
+        private TextBlock curPage;
+        private Button nextPage;
+
+        private Button addToLibrary;
 
         private ComboBox modeSelect;
         
         private Button startSearch;
         private ListBox searchResultList;
+        private Button selectedItem;
 
         public SearchView()
         {
             AvaloniaXamlLoader.Load(this);
 
+            searchStatus = this.Find<TextBlock>("SearchStatus");
+
             titleQuery = this.Find<TextBox>("TitleQuery");
 
-            authorsQuery = this.Find<ListBox>("AuthorsQuery");
-            addAuthorButton = this.Find<Button>("AddAuthor");
-            newAuthor = this.Find<TextBox>("NewAuthor");
-            
+            authorsQuery = this.Find<TextBox>("AuthorsQuery");
 
+            // Navigation
+            navigationPanel = this.Find<StackPanel>("NavigationPanel");
+            prevPage = this.Find<Button>("PrevPage");
+            curPage = this.Find<TextBlock>("CurPage");
+            nextPage = this.Find<Button>("NextPage");
 
             modeSelect = this.Find<ComboBox>("ModeSelect");
+
+            addToLibrary = this.Find<Button>("AddToLibrary");
 
             startSearch = this.Find<Button>("StartSearch");
 
             searchResultList = this.Find<ListBox>("SearchResultList");
-
+            //selectedItem = this.Find<Button>("AddToLibrary");
 
             this.WhenActivated(disposables =>
             {
-                /*this.Bind(
+                //Status
+
+                this.OneWayBind(
                     ViewModel,
-                    vm => vm.Authors,
-                    v => v.authorsQuery,
-                    this.ToAuthorsQuery,
-                    this.FromAuthorsQuery)
-                .DisposeWith(disposables);*/
+                    vm => vm.IsStatusEnabled,
+                    v => v.searchStatus.IsVisible)
+                .DisposeWith(disposables);
 
-                /*this.Bind(ViewModel,
-                    vm => vm.QueryAuthors,
-                    v => v.authorsQuery.Text,
-                    vmToViewConverterOverride: new QueryAuthorsBindingTypeConverter());*/
-
-                //this.WhenAnyValue(v => v.addAuthorButton.Click)
-
-                /// These has to do the same thing
-
-                /*this.WhenAnyValue(x => x.ViewModel.ListQueryAuthors)
-                    .BindTo(this, view => view.authorsQuery.Text);*/
+                this.OneWayBind(
+                    ViewModel,
+                    vm => vm.TotalHits,
+                    v => v.searchStatus.Text,
+                    value => StatusForming(value))
+                .DisposeWith(disposables);
 
                 this.Bind(
                     ViewModel,
@@ -75,18 +83,9 @@ namespace HomeLibrary_Avalonia.Views
 
                 this.Bind(
                     ViewModel,
-                    vm => vm.AuthorField,
-                    v => v.newAuthor.Text)
+                    vm => vm.AuthorsField,
+                    v => v.authorsQuery.Text)
                 .DisposeWith(disposables);
-
-
-
-                this.WhenAnyValue(x => x.newAuthor.Text)
-                    .BindTo(this, x => x.ViewModel.AuthorField);
-
-                this.WhenAnyValue(x => x.ViewModel.AuthorField)
-                    .BindTo(this, x => x.newAuthor.Text);
-                    
 
                 this.OneWayBind(
                     ViewModel,
@@ -100,36 +99,68 @@ namespace HomeLibrary_Avalonia.Views
                     v => v.startSearch)
                 .DisposeWith(disposables);
 
+                // Navigation view
                 this.OneWayBind(
                     ViewModel,
-                    vm => vm.authorsQuery,
-                    v => v.authorsQuery.Items/*,
-                    value => ToAuthorsQuery(value)*/)
+                    vm => vm.IsNavigationEnabled,
+                    v => v.navigationPanel.IsVisible)
                 .DisposeWith(disposables);
 
-                /*using(StreamWriter sw = new StreamWriter("ViewModelDebug.txt", true))
-                {
-                    sw.WriteLine("Opened file!");
-                    foreach (var item in ViewModel.authorsQuery)
-                    {
-                        sw.WriteLine(item);
-                    }
-                    sw.WriteLine();
-                }*/
-                
+                this.OneWayBind(
+                    ViewModel,
+                    vm => vm.Page,
+                    v => v.curPage.Text,
+                    value => value.ToString())
+                .DisposeWith(disposables);
 
-                ///
+                this.OneWayBind(
+                    ViewModel,
+                    vm => vm.IsNavigationEnabled,
+                    v => v.navigationPanel.IsEnabled)
+                .DisposeWith(disposables);
+
+                // Navigation back view
+                this.OneWayBind(
+                    ViewModel,
+                    vm => vm.IsNavigationEnabled,
+                    v => v.prevPage.IsVisible)
+                .DisposeWith(disposables);
+
+                this.OneWayBind(
+                    ViewModel,
+                    vm => vm.IsNavigationBackEnabled,
+                    v => v.prevPage.IsEnabled)
+                .DisposeWith(disposables);
+
+                // Navigation commands
+                this.BindCommand(
+                    ViewModel,
+                    vm => vm.GoNext,
+                    v => v.nextPage)
+                .DisposeWith(disposables);
 
                 this.BindCommand(
                     ViewModel,
-                    vm => vm.AddAuthor,
-                    v => v.addAuthorButton)
+                    vm => vm.GoPrev,
+                    v => v.prevPage)
                 .DisposeWith(disposables);
+
             });
 
         }
 
-        
+        private string StatusForming(int? value)
+        {
+            if(value == null)
+            {
+                return "Request failed - unable to access Core Repository.";
+            }
+            else
+            {
+                return $"TotalHints: {value}";
+            }
+        }
+
         public string ToAuthorsQuery(IEnumerable<string> authorsQuery)
         {
             string res = "Entered authors: ";

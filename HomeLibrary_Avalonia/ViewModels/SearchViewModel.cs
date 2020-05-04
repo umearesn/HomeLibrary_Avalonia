@@ -26,6 +26,7 @@ using System.Text.Json;
 using DynamicData.Binding;
 using System.Collections.ObjectModel;
 using HomeLibrary_Avalonia.Services;
+using System.Linq;
 
 namespace HomeLibrary_Avalonia.ViewModels
 {
@@ -45,6 +46,8 @@ namespace HomeLibrary_Avalonia.ViewModels
                 res += $", {authorsList[i]}";
                 i++;
             }
+            //byte[] bytes = Encoding.Default.GetBytes(res);
+            //res = Encoding.UTF32.GetString(bytes);
             return res;
         }
 
@@ -65,61 +68,167 @@ namespace HomeLibrary_Avalonia.ViewModels
         {
             HostScreen = screen ?? Locator.Current.GetService<IScreen>();
 
-            var cancellation = authorsQuerySource
-                .Connect()
-                .Bind(out authorsQuery)
-                .DisposeMany()
-                .Subscribe();
-
             var searchPartBinding = searchResultSource
                 .Connect()
                 .Bind(out searchResult)
                 .DisposeMany()
                 .Subscribe();
 
+            // Проблемы, если мало ответов
             StartSearching = ReactiveCommand.Create(async () =>
             {
-                var responseMessage 
-                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page, TitleField, authorsQuerySource.Items);
+                IEnumerable<string> authorsList = AuthorsField == null ? null : AuthorsField.Split(' ').Select(x => x.Trim());
+
+                var responseMessage
+                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page, TitleField, authorsList);
+                
+                using (StreamWriter sw = new StreamWriter("noInternet.txt"))
+                {
+                    sw.WriteLine(responseMessage.Item1);
+                }
 
                 if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
                 {
+                    TotalHits = responseMessage.Item2.TotalHits;
+                    IsStatusEnabled = true;
+
+                    using(StreamWriter sw = new StreamWriter("encodingDebug.txt"))
+                    {
+                        foreach (var item in responseMessage.Item2.Data)
+                        {
+                            sw.WriteLine(item.Title);
+                        }
+                    }
+
                     searchResultSource.Clear();
+                    //NULL REFERENCE!!!!!!
                     foreach (var item in responseMessage.Item2.Data)
                     {
                         searchResultSource.Add(item);
                     }
+                    IsNavigationEnabled = true;
+                    if (Page == 1)
+                    {
+                        IsNavigationBackEnabled = false;
+                    }
+                    else
+                    {
+                        IsNavigationBackEnabled = true;
+                    }
                 }
             });
 
-            AddAuthor = ReactiveCommand.Create(() =>
-            {
-             
-                if (AuthorField.Length > 0) { 
-                    authorsQuerySource.Add(AuthorField);
-                    AuthorField = "";
-                }
-            });
 
             GoNext = ReactiveCommand.Create(async () =>
             {
-                Page++;
+                IEnumerable<string> authorsList = AuthorsField == null ? null : AuthorsField.Split(' ').Select(x => x.Trim());
 
-                var responseMessage 
-                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page, TitleField, authorsQuerySource.Items);
+                var responseMessage
+                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page + 1, TitleField, authorsList);
 
                 if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
                 {
+                    TotalHits = responseMessage.Item2.TotalHits;
+                    IsStatusEnabled = true;
                     searchResultSource.Clear();
+                    // NULL REFERENCE
                     foreach (var item in responseMessage.Item2.Data)
                     {
                         searchResultSource.Add(item);
                     }
+                    Page++;
+                    if (Page == 1)
+                    {
+                        IsNavigationBackEnabled = false;
+                    }
+                    else
+                    {
+                        IsNavigationBackEnabled = true;
+                    }
                 }
             });
+
+            GoPrev = ReactiveCommand.Create(async () =>
+            {
+                IEnumerable<string> authorsList = AuthorsField == null ? null : AuthorsField.Split(' ').Select(x => x.Trim());
+
+                /*using (StreamWriter sw = new StreamWriter("testing.txt", true))
+                {
+                    sw.WriteLine($"entered {AuthorsField}");
+                    foreach (var item in authorsList)
+                    {
+                        sw.WriteLine(item);
+                    }
+                }*/
+
+
+                var responseMessage
+                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page - 1, TitleField, authorsList);
+
+                if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
+                {
+                    searchResultSource.Clear();
+                    // NULL REFERENCE
+                    foreach (var item in responseMessage.Item2.Data)
+                    {
+                        searchResultSource.Add(item);
+                    }
+                    Page--;
+                    if (Page == 1)
+                    {
+                        IsNavigationBackEnabled = false;
+                    }
+                    else
+                    {
+                        IsNavigationBackEnabled = true;
+                    }
+                }
+            });
+
+            /*ToTheLibrary = ReactiveCommand.Create(async () =>
+            {
+                searchResultSource
+            });*/
         }
 
-        public int Page { get; private set; } = 1;
+        // Status info
+        private int? totalHits = null;
+        public int? TotalHits
+        {
+            get => totalHits;
+            set => this.RaiseAndSetIfChanged(ref totalHits, value);
+        }
+
+        // Should status be active
+        private bool isStatusEnabled = false;
+        public bool IsStatusEnabled
+        {
+            get => isStatusEnabled;
+            set => this.RaiseAndSetIfChanged(ref isStatusEnabled, value);
+        }
+
+        private int page = 1;
+        public int Page
+        {
+            get => page;
+            set => this.RaiseAndSetIfChanged(ref page, value);
+        }
+
+        private bool isNavigationEnabled = false;
+
+        public bool IsNavigationEnabled
+        {
+            get => isNavigationEnabled;
+            set => this.RaiseAndSetIfChanged(ref isNavigationEnabled, value);
+        }
+
+        private bool isNavigationBackEnabled = false;
+
+        public bool IsNavigationBackEnabled
+        {
+            get => isNavigationBackEnabled;
+            set => this.RaiseAndSetIfChanged(ref isNavigationBackEnabled, value);
+        }
 
         public CoreRepository repo = new CoreRepository();
 
@@ -132,25 +241,17 @@ namespace HomeLibrary_Avalonia.ViewModels
 
         // Navigation
         public ReactiveCommand<Unit, Task> GoNext { get; }
-
+        public ReactiveCommand<Unit, Task> GoPrev { get; }
         //
 
         public string TitleField { get; set; }
 
         // 
 
-        public ReadOnlyObservableCollection<string> authorsQuery;
-
-        private SourceList<string> authorsQuerySource
-            = new SourceList<string>();
-
-        public string AuthorField { get; set; }
-
-        //
-
-        public ReactiveCommand<Unit, Unit> AddAuthor { get; }
+        public string AuthorsField { get; set; }
 
         public ReactiveCommand<Unit, Task> StartSearching { get; }
 
+        public ReactiveCommand<Unit, Task> ToTheLibrary { get; }
     }
 }

@@ -33,11 +33,13 @@ namespace Network
         private List<string> queryArgs;
 
         private SearchMode mode;
-        
+
+        private bool isFulltext = false;
         
         public string GetAsString(int page = 1)
         {
-            return "https://core.ac.uk:443" + RequestParts.GetPath(mode, queryArgs) + RequestParts.GetQuery("LY3jJXVTbtixDHlyFoSe14hKs7kNQRAm", page); 
+
+            return "https://core.ac.uk:443" + RequestParts.GetPath(mode, queryArgs) + $"?fulltext={isFulltext}&"+ RequestParts.GetQuery("LY3jJXVTbtixDHlyFoSe14hKs7kNQRAm", page); 
             //return baseUrl + RequestParts.GetPath(mode, queryArgs) + RequestParts.GetQuery(apiKey);
         }
 
@@ -61,6 +63,18 @@ namespace Network
             this.queryArgs = new List<string>();
         }
 
+        public GetRequest SetId(int id)
+        {
+            queryArgs.Add($"id:{id}");
+            return this;
+        }
+
+        public GetRequest RequireFulltext()
+        {
+            isFulltext = true;
+            return this;
+        }
+
         public GetRequest SetTitle(List<string> title)
         {
             queryArgs.Add(ArgumentsCombiner("title", title));
@@ -81,16 +95,7 @@ namespace Network
 
         public GetRequest SetAuthors(List<string> authors)
         {
-            using (StreamWriter sw = new StreamWriter("SetAuthors.txt", true))
-            {
-                sw.WriteLine("Entered");
-                sw.WriteLine(authors.Count);
-                foreach (var item in authors)
-                {
-                    sw.WriteLine(item);
-                }
-            }
-            if(authors.Count > 0) queryArgs.Add(ArgumentsCombiner("authors",authors));
+            queryArgs.Add(ArgumentsCombiner("authors",authors));
             return this;
         }
 

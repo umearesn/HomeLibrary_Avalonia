@@ -32,6 +32,10 @@ namespace HomeLibrary_Avalonia.Repositories
                 articles = JsonSerializer
                     .Deserialize<ResponseBody<ArticleObject>>(stringContent);
             }
+            using(StreamWriter sw = new StreamWriter("fuckedUp.txt"))
+            {
+                sw.WriteLine(response.StatusCode);
+            }
             return (message, articles);
         }
     }

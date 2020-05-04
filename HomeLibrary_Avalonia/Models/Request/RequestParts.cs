@@ -5,9 +5,9 @@ namespace Network
 {
     public static class RequestParts
     {
-        public static string GetQuery(string apiKey, int page = 1, int pageSize = 10)
+        public static string GetQuery(string apiKey, int page = 1, int pageSize = 10, bool isFulltext = false)
         {
-            return $"?page={page}&pageSize={pageSize}&apiKey={apiKey}";
+            return $"page={page}&pageSize={pageSize}&apiKey={apiKey}";
         }
 
         public static string GetPath(SearchMode mode, List<string> queryArguments)
@@ -22,13 +22,16 @@ namespace Network
             path += "/search";
             foreach (var arg in queryArguments)
             {
-                if (query != null)
+                if (arg != "")
                 {
-                    query += $" and {arg}";
-                }
-                else
-                {
-                    query = arg;
+                    if (query != null)
+                    {
+                        query += $" and {arg}";
+                    }
+                    else
+                    {
+                        query = arg;
+                    }
                 }
             }
 

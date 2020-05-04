@@ -6,6 +6,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Logging.Serilog;
 using Avalonia.ReactiveUI;
+using HomeLibrary_Avalonia.Repositories;
 using Network;
 
 namespace HomeLibrary_Avalonia
@@ -19,7 +20,7 @@ namespace HomeLibrary_Avalonia
         {
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
             GetRequest.InitRequest();
-            
+            //ElasticRepository.InitElasticRepository();
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.

@@ -14,14 +14,6 @@ namespace HomeLibrary_Avalonia.Services
     {
         static public CoreRepository repo = new CoreRepository();
 
-        /*static public string BuildRequest(SearchMode mode, string title = null, IEnumerable<string> authors = null)
-        {
-            GetRequest request = new GetRequest(mode);
-            if (title != null) request.SetTitle(new List<string>() { title });
-            if (authors != null) request.SetAuthors(new List<string>(authors));
-            return request.GetAsString();
-        }*/
-
         static public string BuildRequest(SearchMode mode, int page = 1, string title = null, IEnumerable<string> authors = null)
         {
             GetRequest request = new GetRequest(mode);
@@ -39,6 +31,18 @@ namespace HomeLibrary_Avalonia.Services
                 sw.WriteLine($"Current page: {page}");
             }
             return repo.GetArticlesAsync(BuildRequest(mode, page, title, authors));
+        }
+
+        static public Task<(string, ResponseBody<ArticleObject>)> GetFulltextArticle(int id)
+        {
+            GetRequest request = new GetRequest(SearchMode.articles);
+            request.SetId(id);
+            request.RequireFulltext();
+            using (StreamWriter sw = new StreamWriter("fulltext.txt"))
+            {
+                sw.WriteLine(request.GetAsString());
+            }
+            return repo.GetArticlesAsync(request.GetAsString());
         }
 
     }

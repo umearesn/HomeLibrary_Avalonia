@@ -21,6 +21,7 @@ namespace HomeLibrary_Avalonia
             Locator.CurrentMutable.RegisterConstant<IScreen>(new HostingViewModel());
             //Locator.CurrentMutable.Register<IViewFor<NavigationViewModel>> (() => new NavigationView());
             Locator.CurrentMutable.Register<IViewFor<SearchViewModel>>(() => new SearchView());
+            Locator.CurrentMutable.Register<IViewFor<LocalLibraryViewModel>>(() => new LocalLibraryView());
 
             //Locator.CurrentMutable.RegisterConstant(new QueryAuthorsBindingTypeConverter(), typeof(IBindingTypeConverter)
 //);
