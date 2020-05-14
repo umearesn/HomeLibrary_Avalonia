@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading;
 using Avalonia;
 using Avalonia.Controls;
@@ -19,7 +20,8 @@ namespace HomeLibrary_Avalonia
         public static void Main(string[] args)
         {
             BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
-            GetRequest.InitRequest();
+            //GetRequest.InitRequest();
+
             //ElasticRepository.InitElasticRepository();
         }
 

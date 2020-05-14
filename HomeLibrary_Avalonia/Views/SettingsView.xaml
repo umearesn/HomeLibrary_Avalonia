@@ -1,0 +1,55 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:HomeLibrary_Avalonia.ViewModels;assembly=HomeLibrary_Avalonia"
+             xmlns:reactiveUi="http://reactiveui.net"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="HomeLibrary_Avalonia.Views.SettingsView">
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+    <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="*"/>
+          <ColumnDefinition Width="4*"/>
+          <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+      <StackPanel Grid.Column="1" VerticalAlignment="Center">
+
+        <TextBlock Text="CORE settings" FontWeight="Bold" HorizontalAlignment="Center" FontSize="20"/>
+        <TextBlock Height="10"/>
+        <TextBlock Text="CORE URL:"/>
+        <TextBox x:Name="CoreUrl" Height="30"/>
+
+        <TextBlock Height="20"/>
+        <TextBlock Text="CORE Api key:"/>
+        <TextBox x:Name="CoreApiKey" Height="30"/>
+
+        <TextBlock Height="30"/>
+
+        <TextBlock Text="Elasticsearch settings:" FontWeight="Bold" HorizontalAlignment="Center" FontSize="20"/>
+        <TextBlock Height="10"/>
+        <TextBlock Text="Elasticsearch host:"/>
+        <TextBox x:Name="ElasticHost" Height="30"/>
+
+        <TextBlock Height="20"/>
+        <TextBlock Text="Elasticsearch port:"/>
+        <TextBox x:Name="ElasticPort" Height="30"/>
+
+        <TextBlock Height="30"/>
+
+        <TextBlock Text="Directory for PDF:" FontWeight="Bold" HorizontalAlignment="Center" FontSize="20"/>
+        <TextBlock Height="10"/>
+        <TextBlock Text="Directory:"/>
+        <TextBox x:Name="Directory" Height="30"/>
+
+        <TextBlock Height="30"/>
+
+        <Button Width="150" Height="60" Command="{Binding SaveChanges}">
+          <TextBlock Text="Save changes" FontSize="17" FontWeight="Bold"/>
+        </Button>
+      </StackPanel>
+    </Grid>
+  </ScrollViewer>
+</UserControl>

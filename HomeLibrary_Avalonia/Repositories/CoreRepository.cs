@@ -1,16 +1,13 @@
 ﻿using HomeLibrary_Avalonia.Models.Response;
-using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HomeLibrary_Avalonia.Repositories
 {
-    public class CoreRepository : RepositoryInterface
+    public class CoreRepository
     {
         private static HttpClient client = new HttpClient();
 
@@ -27,16 +24,37 @@ namespace HomeLibrary_Avalonia.Repositories
             ResponseBody<ArticleObject> articles = new ResponseBody<ArticleObject>();
             string message = response.StatusCode.ToString();
             string stringContent = await response.Content.ReadAsStringAsync();
-            if(response.StatusCode == HttpStatusCode.OK)
+            if (response.StatusCode == HttpStatusCode.OK)
             {
                 articles = JsonSerializer
                     .Deserialize<ResponseBody<ArticleObject>>(stringContent);
             }
-            using(StreamWriter sw = new StreamWriter("fuckedUp.txt"))
-            {
-                sw.WriteLine(response.StatusCode);
-            }
             return (message, articles);
         }
+
+        public async Task<string> LoadPDF(string path, string link)
+        {
+            var response = await client.GetAsync(link);
+            if (link.Contains("/download/pdf"))
+            {
+                using (var fs = new FileStream(path, FileMode.Create))
+                {
+                    await response.Content.CopyToAsync(fs);
+                }
+            }
+            else
+            {
+                using (var sw = new StreamWriter(path))
+                {
+                    sw.WriteLine(link);
+                }
+            }
+            
+
+            
+
+            return response.StatusCode.ToString();
+        }
+
     }
 }

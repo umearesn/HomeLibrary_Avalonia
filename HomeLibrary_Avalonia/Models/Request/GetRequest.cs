@@ -1,46 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using SharpDX.Direct3D11;
+﻿using System.Collections.Generic;
 
 namespace Network
 {
     public class GetRequest : IRequest<GetRequest>
     {
 
-        private static string baseUrl;
+        private string url;
 
-        private static string apiKey;
-        
-        public static void InitRequest()
-        {
-            using (StreamReader sr = new StreamReader("../../../Assets/info.keys"))
-            {
-                string str = "";
-                Dictionary<string, string> values = new Dictionary<string, string>();
-                while ((str = sr.ReadLine()) != null)
-                {
-                    Console.WriteLine(str);
-                    string[] vals = str.Split(' ');
-                    values.Add(vals[0], vals[1]);
-                }
-                baseUrl = values["baseUrl"];
-                apiKey = values["apiKey"];
-            };
-        }
+        private string apikey;
 
         private List<string> queryArgs;
 
         private SearchMode mode;
 
         private bool isFulltext = false;
-        
+
         public string GetAsString(int page = 1)
         {
-
-            return "https://core.ac.uk:443" + RequestParts.GetPath(mode, queryArgs) + $"?fulltext={isFulltext}&"+ RequestParts.GetQuery("LY3jJXVTbtixDHlyFoSe14hKs7kNQRAm", page); 
-            //return baseUrl + RequestParts.GetPath(mode, queryArgs) + RequestParts.GetQuery(apiKey);
+            return url + RequestParts.GetPath(mode, queryArgs) + $"?fulltext={isFulltext}&" + RequestParts.GetQuery(page) + apikey;
         }
 
         private static string ArgumentsCombiner(string argName, List<string> arguments)
@@ -56,14 +33,16 @@ namespace Network
             }
             return res;
         }
-        
-        public GetRequest(SearchMode mode)
+
+        public GetRequest(string url, string apikey, SearchMode mode)
         {
+            this.url = url;
+            this.apikey = apikey;
             this.mode = mode;
             this.queryArgs = new List<string>();
         }
 
-        public GetRequest SetId(int id)
+        public GetRequest SetId(string id)
         {
             queryArgs.Add($"id:{id}");
             return this;
@@ -95,13 +74,13 @@ namespace Network
 
         public GetRequest SetAuthors(List<string> authors)
         {
-            queryArgs.Add(ArgumentsCombiner("authors",authors));
+            queryArgs.Add(ArgumentsCombiner("authors", authors));
             return this;
         }
 
         public GetRequest SetPublisher(List<string> publisher)
         {
-            queryArgs.Add(ArgumentsCombiner("publisher" , publisher));
+            queryArgs.Add(ArgumentsCombiner("publisher", publisher));
             return this;
         }
 
@@ -149,7 +128,7 @@ namespace Network
                 syears.Add(elem.ToString());
             }
             queryArgs.Add(ArgumentsCombiner("year", syears));
-            return this;;
+            return this; ;
         }
     }
 }

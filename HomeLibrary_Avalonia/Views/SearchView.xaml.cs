@@ -3,9 +3,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using HomeLibrary_Avalonia.ViewModels;
 using ReactiveUI;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reactive.Disposables;
 
 namespace HomeLibrary_Avalonia.Views
@@ -25,13 +23,10 @@ namespace HomeLibrary_Avalonia.Views
         private TextBlock curPage;
         private Button nextPage;
 
-        private Button addToLibrary;
-
         private ComboBox modeSelect;
         
         private Button startSearch;
         private ListBox searchResultList;
-        private Button selectedItem;
 
         public SearchView()
         {
@@ -50,8 +45,6 @@ namespace HomeLibrary_Avalonia.Views
             nextPage = this.Find<Button>("NextPage");
 
             modeSelect = this.Find<ComboBox>("ModeSelect");
-
-            addToLibrary = this.Find<Button>("AddToLibrary");
 
             startSearch = this.Find<Button>("StartSearch");
 
@@ -72,7 +65,7 @@ namespace HomeLibrary_Avalonia.Views
                     ViewModel,
                     vm => vm.TotalHits,
                     v => v.searchStatus.Text,
-                    value => StatusForming(value))
+                    value => value)
                 .DisposeWith(disposables);
 
                 this.Bind(
@@ -104,6 +97,12 @@ namespace HomeLibrary_Avalonia.Views
                     ViewModel,
                     vm => vm.IsNavigationEnabled,
                     v => v.navigationPanel.IsVisible)
+                .DisposeWith(disposables);
+
+                this.OneWayBind(
+                    ViewModel,
+                    vm => vm.IsNavigationForwardEnabled,
+                    v => v.nextPage.IsEnabled)
                 .DisposeWith(disposables);
 
                 this.OneWayBind(
@@ -170,10 +169,6 @@ namespace HomeLibrary_Avalonia.Views
                 {
                     res += $"{item},";
                 }
-            }
-            using (StreamWriter sw = new StreamWriter("log1.txt", true))
-            {
-                sw.WriteLine(res.Substring(0, res.Length - 1));
             }
             return res.Substring(0, res.Length - 1);
         }

@@ -1,59 +1,20 @@
-﻿using Avalonia.Controls;
-using Avalonia.Data.Converters;
-using Avalonia.Interactivity;
-using Avalonia.Markup.Xaml;
+﻿using Avalonia.Markup.Xaml;
 using HomeLibrary_Avalonia.Models.Response;
-using HomeLibrary_Avalonia.Views;
 using ReactiveUI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Runtime.CompilerServices;
-using System.Text;
-using Avalonia.ReactiveUI;
 using System.Runtime.Serialization;
 using Splat;
 using System.Reactive;
-using System.IO;
 using DynamicData;
 using Network;
 using HomeLibrary_Avalonia.Repositories;
 using System.Threading.Tasks;
-using System.Net.Http;
 using System.Net;
-using System.Text.Json;
-using DynamicData.Binding;
 using System.Collections.ObjectModel;
 using HomeLibrary_Avalonia.Services;
-using System.Linq;
 
 namespace HomeLibrary_Avalonia.ViewModels
 {
-
-    public class AuthorsAsString : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            List<string> authorsList = value as List<string>;
-            if (authorsList == null || authorsList.Count == 0)
-                return "No data about authors.";
-            
-            string res = authorsList[0];
-            int i = 1;
-            while (i < authorsList.Count)
-            {
-                res += $", {authorsList[i]}";
-                i++;
-            }
-            //byte[] bytes = Encoding.Default.GetBytes(res);
-            //res = Encoding.UTF32.GetString(bytes);
-            return res;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-          => throw new NotImplementedException();
-    }
 
     [DataContract]
     public class SearchViewModel : ReactiveObject, IRoutableViewModel
@@ -61,8 +22,6 @@ namespace HomeLibrary_Avalonia.ViewModels
         public IScreen HostScreen { get; }
 
         public string UrlPathSegment => "/search";
-
-
 
         public SearchViewModel(IScreen screen = null)
         {
@@ -74,106 +33,47 @@ namespace HomeLibrary_Avalonia.ViewModels
                 .DisposeMany()
                 .Subscribe();
 
-            // Проблемы, если мало ответов
             StartSearching = ReactiveCommand.Create(async () =>
             {
-                IEnumerable<string> authorsList = AuthorsField == null ? null : AuthorsField.Split(' ').Select(x => x.Trim());
-
+                Page = 1;
                 var responseMessage
-                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page, TitleField, authorsList);
-                
-                using (StreamWriter sw = new StreamWriter("noInternet.txt"))
-                {
-                    sw.WriteLine(responseMessage.Item1);
-                }
+                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page, TitleField, AuthorsField);
 
-                if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
-                {
-                    TotalHits = responseMessage.Item2.TotalHits;
-                    IsStatusEnabled = true;
-
-                    using(StreamWriter sw = new StreamWriter("encodingDebug.txt"))
-                    {
-                        foreach (var item in responseMessage.Item2.Data)
-                        {
-                            sw.WriteLine(item.Title);
-                        }
-                    }
-
-                    searchResultSource.Clear();
-                    //NULL REFERENCE!!!!!!
-                    foreach (var item in responseMessage.Item2.Data)
-                    {
-                        searchResultSource.Add(new ArticleViewModel(item));
-                    }
-                    IsNavigationEnabled = true;
-                    if (Page == 1)
-                    {
-                        IsNavigationBackEnabled = false;
-                    }
-                    else
-                    {
-                        IsNavigationBackEnabled = true;
-                    }
-                }
+                DisplayLoaded(responseMessage, Page);
             });
 
 
             GoNext = ReactiveCommand.Create(async () =>
             {
-                IEnumerable<string> authorsList = AuthorsField == null ? null : AuthorsField.Split(' ').Select(x => x.Trim());
-
                 var responseMessage
-                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page + 1, TitleField, authorsList);
+                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page + 1, TitleField, AuthorsField);
 
-                if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
-                {
-                    TotalHits = responseMessage.Item2.TotalHits;
-                    IsStatusEnabled = true;
-                    searchResultSource.Clear();
-                    // NULL REFERENCE
-                    foreach (var item in responseMessage.Item2.Data)
-                    {
-                        searchResultSource.Add(new ArticleViewModel(item));
-                    }
-                    Page++;
-                    if (Page == 1)
-                    {
-                        IsNavigationBackEnabled = false;
-                    }
-                    else
-                    {
-                        IsNavigationBackEnabled = true;
-                    }
-                }
+                DisplayLoaded(responseMessage, Page + 1);
             });
 
             GoPrev = ReactiveCommand.Create(async () =>
             {
-                IEnumerable<string> authorsList = AuthorsField == null ? null : AuthorsField.Split(' ').Select(x => x.Trim());
-
-                /*using (StreamWriter sw = new StreamWriter("testing.txt", true))
-                {
-                    sw.WriteLine($"entered {AuthorsField}");
-                    foreach (var item in authorsList)
-                    {
-                        sw.WriteLine(item);
-                    }
-                }*/
-
-
                 var responseMessage
-                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page - 1, TitleField, authorsList);
+                    = await SearchService.GetArticlesAsync(SearchMode.articles, Page - 1, TitleField, AuthorsField);
 
-                if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
+                DisplayLoaded(responseMessage, Page - 1);
+            });
+        }
+
+        private void DisplayLoaded((string, ResponseBody<ArticleObject>) responseMessage, int currentPage)
+        {
+            if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
+            {
+                searchResultSource.Clear();
+                if(responseMessage.Item2.Data != null)
                 {
-                    searchResultSource.Clear();
-                    // NULL REFERENCE
+                    TotalHits = $"TotalHits:{responseMessage.Item2.TotalHits}.";
+                    IsStatusEnabled = true;
                     foreach (var item in responseMessage.Item2.Data)
                     {
                         searchResultSource.Add(new ArticleViewModel(item));
                     }
-                    Page--;
+                    Page = currentPage;
                     if (Page == 1)
                     {
                         IsNavigationBackEnabled = false;
@@ -182,18 +82,26 @@ namespace HomeLibrary_Avalonia.ViewModels
                     {
                         IsNavigationBackEnabled = true;
                     }
+                    if(Page == ((responseMessage.Item2.TotalHits + 9) / 10))
+                    {
+                        IsNavigationForwardEnabled = false;
+                    }
+                    else
+                    {
+                        IsNavigationEnabled = true;
+                    }
                 }
-            });
-
-            /*ToTheLibrary = ReactiveCommand.Create(async () =>
-            {
-                searchResultSource
-            });*/
+                else
+                {
+                    TotalHits = $"Failed to find any data!";
+                    IsStatusEnabled = true;
+                }
+            }
         }
 
         // Status info
-        private int? totalHits = null;
-        public int? TotalHits
+        private string totalHits = null;
+        public string TotalHits
         {
             get => totalHits;
             set => this.RaiseAndSetIfChanged(ref totalHits, value);
@@ -215,7 +123,6 @@ namespace HomeLibrary_Avalonia.ViewModels
         }
 
         private bool isNavigationEnabled = false;
-
         public bool IsNavigationEnabled
         {
             get => isNavigationEnabled;
@@ -223,11 +130,17 @@ namespace HomeLibrary_Avalonia.ViewModels
         }
 
         private bool isNavigationBackEnabled = false;
-
         public bool IsNavigationBackEnabled
         {
             get => isNavigationBackEnabled;
             set => this.RaiseAndSetIfChanged(ref isNavigationBackEnabled, value);
+        }
+
+        private bool isNavigationForwardEnabled = true;
+        public bool IsNavigationForwardEnabled
+        {
+            get => isNavigationForwardEnabled;
+            set => this.RaiseAndSetIfChanged(ref isNavigationForwardEnabled, value);
         }
 
         public CoreRepository repo = new CoreRepository();

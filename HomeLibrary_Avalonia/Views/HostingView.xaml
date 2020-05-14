@@ -17,21 +17,33 @@
 
     <reactiveUi:RoutedViewHost Grid.Row="0" Router="{Binding Router}">
       <reactiveUi:RoutedViewHost.DefaultContent>
-        <views:SearchView/>
+        <views:SettingsView/>
       </reactiveUi:RoutedViewHost.DefaultContent>
     </reactiveUi:RoutedViewHost>
-
+    
     <!-- Bottom panel with navigation panels. -->
-    <Panel Grid.Row="1" Height="60"
-                 VerticalAlignment="Bottom" Background="Black">
-      <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-        <Button Grid.Column="1" Grid.Row="1"
-                Width="150" Margin="5"
-                Content="Поиск по статьям" Command="{Binding GoSearching}"/>
-        <Button Grid.Column="3" Grid.Row="1"
-                Width="150" Margin="5"
-                Content="Просмотр библиотеки" Command="{Binding GoLocal}"/>
+    <Grid Grid.Row="1" Height="60">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="60"/>
+        <ColumnDefinition Width="*"/>
+        <ColumnDefinition Width="60"/>
+      </Grid.ColumnDefinitions>
+      <StackPanel Grid.Column="0" Background="Black"/>
+      <StackPanel Grid.Column="1" HorizontalAlignment="Stretch" Background="Black">
+        <StackPanel Background="Black" Height="60"
+                    HorizontalAlignment="Center" Orientation="Horizontal">
+          <Button Width="150" Margin="5"
+                  Content="Поиск по статьям" Command="{Binding GoSearching}"/>
+          <Button Width="150" Margin="5"
+                  Content="Просмотр библиотеки" Command="{Binding GoLocal}"/>
+        </StackPanel>
       </StackPanel>
-    </Panel>
+      <StackPanel Grid.Column="2" Background="Black" Height="60">
+        <Button Margin="5" Height="50" Background="Black" Command="{Binding GoSettings}">
+          <Image Source="resm:HomeLibrary_Avalonia.Assets.Controls.SettingsIcon.png"/>
+        </Button>
+      </StackPanel>
+    </Grid>
+
   </Grid>
 </Window>

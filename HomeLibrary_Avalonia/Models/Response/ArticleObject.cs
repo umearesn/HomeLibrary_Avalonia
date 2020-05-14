@@ -1,16 +1,11 @@
-﻿using HomeLibrary_Avalonia.Repositories;
-using HomeLibrary_Avalonia.Services;
-using ReactiveUI;
-using System.Collections.Generic;
-using System.Reactive;
+﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HomeLibrary_Avalonia.Models.Response
 {
     public class ArticleObject
     {
-        
+
         [JsonPropertyName("id")]
         public string Id { get; set; } // документация врет, там стринга
 
@@ -35,7 +30,7 @@ namespace HomeLibrary_Avalonia.Models.Response
         [JsonPropertyName("description")]
         public string Description { get; set; }
         
-        [JsonPropertyName("fulltext")]
+        [JsonPropertyName("fullText")]
         public string Fulltext { get; set; }
         
         [JsonPropertyName("identifiers")]
@@ -102,6 +97,9 @@ namespace HomeLibrary_Avalonia.Models.Response
         /// </summary>
         [JsonPropertyName("downloadUrl")]
         public string DownloadUrl { get; set; }
+
+        [JsonPropertyName("pdfPath")]
+        public string PdfPath { get; set; }
     }
     
     public class Citation

@@ -9,6 +9,7 @@
       <e p="_Playground" t="IncludeRecursive">
         <e p="_Playground.csproj" t="IncludeRecursive" />
         <e p="bin" t="ExcludeRecursive" />
+        <e p="ConnectingElasticService.cs" t="Include" />
         <e p="ElasticInside.cs" t="Include" />
         <e p="ElasticNode.cs" t="Include" />
         <e p="ElasticSearch.cs" t="Include" />
@@ -22,27 +23,128 @@
         </e>
         <e p="OneMoreElastic.cs" t="Include" />
         <e p="Person.cs" t="Include" />
-        <e p="Requests_Testing.cs" t="Include" />
         <e p="somefile.txt" t="Include" />
-        <e p="UriExperimental.cs" t="Include" />
       </e>
       <e p="HomeLibrary_Avalonia" t="IncludeRecursive">
         <e p=".gitignore" t="Include" />
+        <e p="App.config" t="Include" />
         <e p="App.xaml" t="Include" />
         <e p="App.xaml.cs" t="Include" />
         <e p="Assets" t="Include">
           <e p="avalonia-logo.ico" t="Include" />
-          <e p="info.keys" t="Include" />
+          <e p="Controls" t="Include">
+            <e p="BackArrow.png" t="Include" />
+            <e p="Delete.png" t="Include" />
+            <e p="Favourites.png" t="Include" />
+            <e p="ForwardArrow.png" t="Include" />
+            <e p="SettingsIcon.png" t="Include" />
+          </e>
         </e>
         <e p="bin" t="ExcludeRecursive" />
+        <e p="Documents" t="Include">
+          <e p=".pdf" t="Include" />
+          <e p="Crowdsourcing Culinary History at The New York Public Library-, Benjamin Vershbow-637248214739208769.pdf" t="Include" />
+          <e p="Les imams « exportés » de la Diyanet en France " t="Include" />
+          <e p="Math Major, Math Major-70971076-Benjamin, Arthur T. .pdf" t="Include" />
+          <e p="Math-Selfie-Kutateladze, S. S.-637248435212470380.pdf" t="Include" />
+          <e p="Math-Selfie-Kutateladze, S. S.-637248436319349325.pdf" t="Include" />
+          <e p="Math-Selfie-Kutateladze, S. S.-637248443894186903.txt" t="Include" />
+          <e p="Psychology and Media Psychology,-, Carolyn Rosé, Armin Weinberger, Frank Fischer, Karsten Stegmann-637248454236989318.pdf" t="Include" />
+          <e p="Psychology and Media Psychology,-, Carolyn Rosé, Armin Weinberger, Frank Fischer, Karsten Stegmann-637248461719954746.pdf" t="Include" />
+          <e p="Psychology and Media Psychology,-, Carolyn Rosé, Armin Weinberger, Frank Fischer, Karsten Stegmann-637248463351628053.pdf" t="Include" />
+          <e p="Psychology-, 片桐 正敏-637248454266017140.pdf" t="Include" />
+          <e p="Psychology-Daniel, Robert S.-637248454262441021.pdf" t="Include" />
+          <e p="Psychology-松井 三枝-637248454264519946.pdf" t="Include" />
+          <e p="Psychology-松井 三枝-637248454274336902.pdf" t="Include" />
+          <e p="Psychology-松井 三枝-637248454291273340.pdf" t="Include" />
+          <e p="Psychology-松井 三枝-637248454293673278.pdf" t="Include" />
+          <e p="Psychology-松井 三枝-637248454294157017.pdf" t="Include" />
+          <e p="Russian Universities.-R., C.-637248593300615467.pdf" t="Include" />
+          <e p="Russian Universities.-R., C.-637248593318586606.pdf" t="Include" />
+          <e p="Test-Smith, John-637248586826812802.pdf" t="Include" />
+          <e p="test-محمدرضا حیدری پردون, محسن بارونی, شهرام گلستانی, محمود نکوئی مقد,-637247607879320044.pdf" t="Include" />
+        </e>
+        <e p="Fonts" t="Include">
+          <e p="NotoSerif" t="Include">
+            <e p="LICENSE_OFL.txt" t="Include" />
+            <e p="NotoSerif-Black.ttf" t="Include" />
+            <e p="NotoSerif-BlackItalic.ttf" t="Include" />
+            <e p="NotoSerif-Bold.ttf" t="Include" />
+            <e p="NotoSerif-BoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-Condensed.ttf" t="Include" />
+            <e p="NotoSerif-CondensedBlack.ttf" t="Include" />
+            <e p="NotoSerif-CondensedBlackItalic.ttf" t="Include" />
+            <e p="NotoSerif-CondensedBold.ttf" t="Include" />
+            <e p="NotoSerif-CondensedBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-CondensedExtraBold.ttf" t="Include" />
+            <e p="NotoSerif-CondensedExtraBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-CondensedExtraLight.ttf" t="Include" />
+            <e p="NotoSerif-CondensedExtraLightItalic.ttf" t="Include" />
+            <e p="NotoSerif-CondensedItalic.ttf" t="Include" />
+            <e p="NotoSerif-CondensedLight.ttf" t="Include" />
+            <e p="NotoSerif-CondensedLightItalic.ttf" t="Include" />
+            <e p="NotoSerif-CondensedMedium.ttf" t="Include" />
+            <e p="NotoSerif-CondensedMediumItalic.ttf" t="Include" />
+            <e p="NotoSerif-CondensedSemiBold.ttf" t="Include" />
+            <e p="NotoSerif-CondensedSemiBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-CondensedThin.ttf" t="Include" />
+            <e p="NotoSerif-CondensedThinItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraBold.ttf" t="Include" />
+            <e p="NotoSerif-ExtraBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensed.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedBlack.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedBlackItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedBold.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedExtraBold.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedExtraBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedExtraLight.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedExtraLightItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedLight.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedLightItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedMedium.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedMediumItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedSemiBold.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedSemiBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedThin.ttf" t="Include" />
+            <e p="NotoSerif-ExtraCondensedThinItalic.ttf" t="Include" />
+            <e p="NotoSerif-ExtraLight.ttf" t="Include" />
+            <e p="NotoSerif-ExtraLightItalic.ttf" t="Include" />
+            <e p="NotoSerif-Italic.ttf" t="Include" />
+            <e p="NotoSerif-Light.ttf" t="Include" />
+            <e p="NotoSerif-LightItalic.ttf" t="Include" />
+            <e p="NotoSerif-Medium.ttf" t="Include" />
+            <e p="NotoSerif-MediumItalic.ttf" t="Include" />
+            <e p="NotoSerif-Regular.ttf" t="Include" />
+            <e p="NotoSerif-SemiBold.ttf" t="Include" />
+            <e p="NotoSerif-SemiBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensed.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedBlack.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedBlackItalic.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedBold.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedExtraBold.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedExtraBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedExtraLight.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedExtraLightItalic.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedItalic.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedLight.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedLightItalic.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedMedium.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedMediumItalic.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedSemiBold.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedSemiBoldItalic.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedThin.ttf" t="Include" />
+            <e p="NotoSerif-SemiCondensedThinItalic.ttf" t="Include" />
+            <e p="NotoSerif-Thin.ttf" t="Include" />
+            <e p="NotoSerif-ThinItalic.ttf" t="Include" />
+            <e p="README" t="Include" />
+          </e>
+        </e>
         <e p="HomeLibrary_Avalonia.csproj" t="IncludeRecursive" />
         <e p="Models" t="Include">
-          <e p="LocalStore" t="Include" />
           <e p="Request" t="Include">
-            <e p="ArticlesRequest" t="Include">
-              <e p="ArticleRequest.cs" t="Include" />
-            </e>
-            <e p="BaseRequest.cs" t="Include" />
             <e p="GetRequest.cs" t="Include" />
             <e p="IRequest.cs" t="Include" />
             <e p="RequestParts.cs" t="Include" />
@@ -67,20 +169,35 @@
           </e>
         </e>
         <e p="Program.cs" t="Include" />
+        <e p="Repositories" t="Include">
+          <e p="CoreRepository.cs" t="Include" />
+          <e p="ElasticRepository.cs" t="Include" />
+          <e p="RepositoryInterface.cs" t="Include" />
+        </e>
+        <e p="Services" t="Include">
+          <e p="ConvertersService.cs" t="Include" />
+          <e p="DatabaseService.cs" t="Include" />
+          <e p="SearchService.cs" t="Include" />
+          <e p="SettingsService.cs" t="Include" />
+        </e>
         <e p="ViewLocator.cs" t="Include" />
         <e p="ViewModels" t="Include">
-          <e p="MainWindowViewModel.cs" t="Include" />
-          <e p="ViewModelBase.cs" t="Include" />
+          <e p="ArticleViewModel.cs" t="Include" />
+          <e p="Converters.cs" t="Include" />
+          <e p="HostingViewModel.cs" t="Include" />
+          <e p="LocalLibraryViewModel.cs" t="Include" />
+          <e p="SearchViewModel.cs" t="Include" />
+          <e p="SettingsViewModel.cs" t="Include" />
         </e>
         <e p="Views" t="Include">
-          <e p="MainWindow.xaml" t="Include" />
-          <e p="MainWindow.xaml.cs" t="Include" />
-          <e p="SearchWindow.xaml" t="Include" />
-          <e p="SearchWindow.xaml.cs" t="Include" />
-          <e p="Templates" t="Include">
-            <e p="ArticlePanel.xaml" t="Include" />
-            <e p="ArticlePanel.xaml.cs" t="Include" />
-          </e>
+          <e p="HostingView.xaml" t="Include" />
+          <e p="HostingView.xaml.cs" t="Include" />
+          <e p="LocalLibraryView.xaml" t="Include" />
+          <e p="LocalLibraryView.xaml.cs" t="Include" />
+          <e p="SearchView.xaml" t="Include" />
+          <e p="SearchView.xaml.cs" t="Include" />
+          <e p="SettingsView.xaml" t="Include" />
+          <e p="SettingsView.xaml.cs" t="Include" />
         </e>
       </e>
       <e p="HomeLibrary_Avalonia.sln" t="IncludeFlat" />
