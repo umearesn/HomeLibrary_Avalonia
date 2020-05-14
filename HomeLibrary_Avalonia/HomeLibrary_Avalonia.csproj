@@ -11,7 +11,11 @@
         <AvaloniaResource Include="**\*.xaml">
             <SubType>Designer</SubType>
         </AvaloniaResource>
-        <AvaloniaResource Include="Assets\**" />
+        <EmbeddedResource Include="Assets\*" />
+		<EmbeddedResource Include="Assets\Controls\*" />
+		<AvaloniaResource Remove="Views\SettingsView.xaml" />
+		<None Remove="Assets\Controls\SettingsIcon.png" />
+		<None Remove="Views\SettingsView.xaml" />
     </ItemGroup>
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="0.9.0" />
@@ -19,5 +23,14 @@
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.0" />
         <PackageReference Include="Elasticsearch.Net" Version="7.6.0" />
         <PackageReference Include="NEST" Version="7.6.0" />
+        <PackageReference Include="ReactiveUI" Version="11.3.8" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
+        <PackageReference Include="System.Reactive" Version="4.4.1" />
     </ItemGroup>
+    <ItemGroup>
+      <EmbeddedResource Include="Views\SettingsView.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </EmbeddedResource>
+    </ItemGroup>
+
 </Project>
