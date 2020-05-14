@@ -5,7 +5,7 @@ namespace Network
 {
     public static class RequestParts
     {
-        public static string GetQuery(int page = 1, int pageSize = 10, bool isFulltext = false)
+        public static string GetQuery(int page = 1, int pageSize = 10)
         {
             return $"page={page}&pageSize={pageSize}&apiKey=";
         }
