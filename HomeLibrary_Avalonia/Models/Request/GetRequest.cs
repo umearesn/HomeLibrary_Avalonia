@@ -17,7 +17,7 @@ namespace Network
 
         public string GetAsString(int page = 1)
         {
-            return url + RequestParts.GetPath(mode, queryArgs) + $"?fulltext={isFulltext}&" + RequestParts.GetQuery(page) + apikey;
+            return url + RequestParts.GetPath(mode, queryArgs) + $"?fulltext={isFulltext.ToString().ToLower()}&" + RequestParts.GetQuery(page) + apikey;
         }
 
         private static string ArgumentsCombiner(string argName, List<string> arguments)
