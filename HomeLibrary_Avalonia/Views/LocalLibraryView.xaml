@@ -49,7 +49,7 @@
         <ListBox Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="LocalArticlesList">
           <ListBox.ItemTemplate>
             <DataTemplate DataType="{x:Type vm:ArticleViewModel}">
-              <Button HorizontalContentAlignment="Stretch">
+              <Button HorizontalContentAlignment="Stretch"  Command="{Binding OpenFile}">
                 <Grid>
                   <Grid.RowDefinitions>
                     <RowDefinition Height="*" MinHeight="30"/>

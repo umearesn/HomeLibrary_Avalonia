@@ -33,9 +33,9 @@
         <StackPanel Background="Black" Height="60"
                     HorizontalAlignment="Center" Orientation="Horizontal">
           <Button Width="150" Margin="5"
-                  Content="Поиск по статьям" Command="{Binding GoSearching}"/>
+                  Content="CORE search" Command="{Binding GoSearching}"/>
           <Button Width="150" Margin="5"
-                  Content="Просмотр библиотеки" Command="{Binding GoLocal}"/>
+                  Content="Local library search" Command="{Binding GoLocal}"/>
         </StackPanel>
       </StackPanel>
       <StackPanel Grid.Column="2" Background="Black" Height="60">

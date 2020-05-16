@@ -4,6 +4,7 @@ using HomeLibrary_Avalonia.Repositories;
 using HomeLibrary_Avalonia.Services;
 using ReactiveUI;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reactive;
@@ -41,6 +42,8 @@ namespace HomeLibrary_Avalonia.ViewModels
         public ReactiveCommand<Unit, Task> AddToTheLibrary { get; }
 
         public ReactiveCommand<Unit, Task> DeleteFromTheLibrary { get; }
+
+        public ReactiveCommand<Unit, Unit> OpenFile { get; }
 
         public ArticleViewModel(ArticleObject article, LocalLibraryViewModel masterLibrary = null)
         {
@@ -133,7 +136,9 @@ namespace HomeLibrary_Avalonia.ViewModels
             DeleteFromTheLibrary = ReactiveCommand.Create(async () =>
             {
                 string filePath = Article.PdfPath;
+
                 ElasticRepository.DeleteArticleId(Article.Id);
+
                 try
                 {
                     if (File.Exists(filePath))
@@ -149,6 +154,12 @@ namespace HomeLibrary_Avalonia.ViewModels
                     }
                 }
                 await _masterLibrary.RemoveAndUpdateList(this);
+            });
+
+            OpenFile = ReactiveCommand.Create(() => 
+            {
+                string path = Path.GetFullPath(pdfPath);
+                Process.Start("explorer.exe", @$"{path}");
             });
         }
 
@@ -228,6 +239,7 @@ namespace HomeLibrary_Avalonia.ViewModels
             {
                 result = result.Replace(item, ' ');
             }
+            result = result.Replace(',', '-');
             return result;
         }
 
