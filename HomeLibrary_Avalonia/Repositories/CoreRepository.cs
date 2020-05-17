@@ -49,10 +49,6 @@ namespace HomeLibrary_Avalonia.Repositories
                     sw.WriteLine(link);
                 }
             }
-            
-
-            
-
             return response.StatusCode.ToString();
         }
 

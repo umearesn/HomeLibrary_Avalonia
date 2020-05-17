@@ -242,9 +242,9 @@ namespace HomeLibrary_Avalonia.Repositories
             );
         }
 
-        public static async void DeleteArticleId(string id)
+        public static void DeleteArticleId(string id)
         {
-            await Task.Run(() => DeleteArticle(id));
+            DeleteArticle(id);
         }
 
     }
