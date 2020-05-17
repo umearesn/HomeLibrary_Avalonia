@@ -19,7 +19,7 @@
 		<None Remove="Views\SettingsView.xaml" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Avalonia" Version="0.9.0" />
+        <PackageReference Include="Avalonia" Version="0.9.10" />
         <PackageReference Include="Avalonia.Desktop" Version="0.9.0" />
         <PackageReference Include="Avalonia.ReactiveUI" Version="0.9.0" />
         <PackageReference Include="NEST" Version="7.6.0" />

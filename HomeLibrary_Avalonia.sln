@@ -1,8 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HomeLibrary_Avalonia", "HomeLibrary_Avalonia\HomeLibrary_Avalonia.csproj", "{0A9F0632-4705-46EF-9566-991E1602629A}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_Playground", "_Playground\_Playground.csproj", "{6E4FB523-16E4-44C0-A6A8-F2585FFBCB12}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HomeLibrary_Avalonia", "HomeLibrary_Avalonia\HomeLibrary_Avalonia.csproj", "{0A9F0632-4705-46EF-9566-991E1602629A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -14,9 +15,11 @@ Global
 		{0A9F0632-4705-46EF-9566-991E1602629A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0A9F0632-4705-46EF-9566-991E1602629A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0A9F0632-4705-46EF-9566-991E1602629A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E4FB523-16E4-44C0-A6A8-F2585FFBCB12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E4FB523-16E4-44C0-A6A8-F2585FFBCB12}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E4FB523-16E4-44C0-A6A8-F2585FFBCB12}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E4FB523-16E4-44C0-A6A8-F2585FFBCB12}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C17CD6AF-76FD-42E5-B4DE-FBDC2AB11F18}
 	EndGlobalSection
 EndGlobal

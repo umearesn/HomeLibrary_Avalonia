@@ -2,8 +2,8 @@
 
 namespace Network
 {
-    public enum SearchMode { all, articles, journals, repositories};
-    
+    public enum SearchMode { all, articles, journals, repositories };
+
     public interface IRequest<out T>
     {
         T SetTitle(List<string> title);

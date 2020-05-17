@@ -1,5 +1,4 @@
-﻿using DynamicData;
-using HomeLibrary_Avalonia.Models.Response;
+﻿using HomeLibrary_Avalonia.Models.Response;
 using HomeLibrary_Avalonia.Repositories;
 using HomeLibrary_Avalonia.Services;
 using ReactiveUI;
@@ -33,11 +32,11 @@ namespace HomeLibrary_Avalonia.ViewModels
             set => this.RaiseAndSetIfChanged(ref pdfPath, value);
         }
 
-        private bool notAdded;
-        public bool NotAdded
+        private bool canBeAdded;
+        public bool CanBeAdded
         {
-            get => notAdded;
-            set => this.RaiseAndSetIfChanged(ref notAdded, value);
+            get => canBeAdded;
+            set => this.RaiseAndSetIfChanged(ref canBeAdded, value);
         }
 
         public ReactiveCommand<Unit, Task> AddToTheLibrary { get; }
@@ -51,48 +50,32 @@ namespace HomeLibrary_Avalonia.ViewModels
             Article = article;
             PdfPath = article.PdfPath;
             _masterLibrary = masterLibrary;
-            if(masterLibrary != null)
+            if (masterLibrary != null || !Directory.Exists(SettingsService.GetDirectoryInfo()))
             {
-                NotAdded = false;
+                CanBeAdded = false;
             }
             else
             {
                 Task.Run(async () =>
                 {
-                    NotAdded = !(await DatabaseService.CheckIfPresentedAsync(Article));
+                    CanBeAdded = !(await DatabaseService.CheckIfPresentedAsync(Article));
                 });
             }
             if (article.Fulltext != null)
             {
-                using(var sw = new StreamWriter("FulltextDebug.txt", true))
-                {
-                    sw.WriteLine($"{DateTime.Now}: {Article.Title}");
-                    sw.WriteLine($"{Article.Fulltext}");
-                    sw.WriteLine();
-                }
                 IsFullTextPresented = true;
             }
 
-            AddToTheLibrary = ReactiveCommand.Create(async () => 
+            AddToTheLibrary = ReactiveCommand.Create(async () =>
             {
                 var responseMessage
                     = await SearchService.GetFulltextArticle(Article.Id);
-
-                using (StreamWriter sw = new StreamWriter("fulltextprinting.txt", true))
-                {
-                    sw.WriteLine($"{DateTime.Now} article {article.Title}.\nLink: {article.Fulltext}");
-                }
 
                 if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
                 {
                     ArticleObject article = responseMessage.Item2.Data[0];
 
                     string loadingLink = article.DownloadUrl;
-
-                    using (StreamWriter sw = new StreamWriter("addingStarted.txt", true))
-                    {
-                        sw.WriteLine($"{DateTime.Now} article added. Link: {article.DownloadUrl}");
-                    }
 
                     if (loadingLink != null)
                     {
@@ -131,7 +114,7 @@ namespace HomeLibrary_Avalonia.ViewModels
 
                     await ElasticRepository.PutArticleAsync(Article);
                 }
-                NotAdded = false;
+                CanBeAdded = false;
             });
 
             DeleteFromTheLibrary = ReactiveCommand.Create(async () =>
@@ -147,22 +130,33 @@ namespace HomeLibrary_Avalonia.ViewModels
                         File.Delete(filePath);
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    using(StreamWriter sw = new StreamWriter("DeleteFailure.txt", true))
+                    try
                     {
-                        sw.WriteLine($"{DateTime.Now}: {ex.Message}.");
+                        using (StreamWriter sw = new StreamWriter("log.txt", true))
+                        {
+                            sw.WriteLine($"{DateTime.Now}: Deletion failed - {ex.Message}.");
+                        }
                     }
+                    catch { }
                 }
                 await _masterLibrary.RemoveAndUpdateList(this);
             });
 
-            OpenFile = ReactiveCommand.Create(() => 
+            OpenFile = ReactiveCommand.Create(() =>
             {
                 try
                 {
                     string path = Path.GetFullPath(pdfPath);
-                    Process.Start("explorer.exe", @$"{path}");
+                    if (File.Exists(path))
+                    {
+                        Process.Start("explorer.exe", @$"{path}");
+                    }
+                    else
+                    {
+                        PdfPath = "File is not found!";
+                    }
                 }
                 catch
                 {
@@ -174,7 +168,7 @@ namespace HomeLibrary_Avalonia.ViewModels
         private async void LoadPdf(ArticleObject article)
         {
             string loadingLink = article.DownloadUrl;
-            
+
             if (loadingLink != null)
             {
                 try
@@ -185,11 +179,14 @@ namespace HomeLibrary_Avalonia.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    using (StreamWriter sw = new StreamWriter("loading_debug_ArticleVM.txt", true))
+                    try
                     {
-                        sw.WriteLine($"{DateTime.Now}: {ex.Message}.");
-                        sw.WriteLine();
+                        using (StreamWriter sw = new StreamWriter("log.txt", true))
+                        {
+                            sw.WriteLine($"{DateTime.Now}: Loading PDF failed - {ex.Message}.");
+                        }
                     }
+                    catch { }
                 }
             }
         }
@@ -211,13 +208,17 @@ namespace HomeLibrary_Avalonia.ViewModels
             authors = Regex.Replace(authors, @"\t|\n|\r", "");
 
             string title = Regex.Replace(article.Title, @"\t|\n|\r", "");
-            title = title.Substring(0, 50);
-            int i = 49;
-            while(title[i] != ' ')
+
+            if (title.Length > 50)
             {
-                i--;
+                title = title.Substring(0, 50);
+                int i = 49;
+                while (title[i] != ' ')
+                {
+                    i--;
+                }
+                title = title.Substring(0, i + 1);
             }
-            title = title.Substring(0, i + 1);
 
             string result = $"{title}-{authors}-{DateTime.Now.Ticks}";
             if (isCoreLink)
@@ -234,7 +235,7 @@ namespace HomeLibrary_Avalonia.ViewModels
 
         private string RemoveProhibitedSymbolsWindows(string name)
         {
-            char[] prohibited = {'\\', '/', ':', '*', '?', '"', '<', '>', '|', '+', '$', '_', '{', '}' };
+            char[] prohibited = { '\\', '/', ':', '*', '?', '"', '<', '>', '|', '+', '$', '_', '{', '}' };
             string result = name;
             foreach (var item in prohibited)
             {

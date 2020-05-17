@@ -20,6 +20,7 @@ namespace HomeLibrary_Avalonia.Views
 
         private TextBox directory;
 
+        private TextBlock status;
         public SettingsView()
         {
             AvaloniaXamlLoader.Load(this);
@@ -29,8 +30,10 @@ namespace HomeLibrary_Avalonia.Views
             elasticHost = this.Find<TextBox>("ElasticHost");
             elasticPort = this.Find<TextBox>("ElasticPort");
             directory = this.Find<TextBox>("Directory");
+            status = this.Find<TextBlock>("Status");
 
-            this.WhenActivated((CompositeDisposable disposables) => {
+            this.WhenActivated((CompositeDisposable disposables) =>
+            {
                 this.Bind(
                     ViewModel,
                     vm => vm.CoreUrl,
@@ -60,9 +63,15 @@ namespace HomeLibrary_Avalonia.Views
                     vm => vm.Directory,
                     v => v.directory.Text)
                 .DisposeWith(disposables);
+
+                this.Bind(
+                    ViewModel,
+                    vm => vm.Status,
+                    v => v.status.Text)
+                .DisposeWith(disposables);
             });
         }
 
-       
+
     }
 }

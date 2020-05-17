@@ -23,8 +23,6 @@ namespace HomeLibrary_Avalonia.Views
         private TextBlock curPage;
         private Button nextPage;
 
-        private ComboBox modeSelect;
-        
         private Button startSearch;
         private ListBox searchResultList;
 
@@ -44,12 +42,9 @@ namespace HomeLibrary_Avalonia.Views
             curPage = this.Find<TextBlock>("CurPage");
             nextPage = this.Find<Button>("NextPage");
 
-            modeSelect = this.Find<ComboBox>("ModeSelect");
-
             startSearch = this.Find<Button>("StartSearch");
 
             searchResultList = this.Find<ListBox>("SearchResultList");
-            //selectedItem = this.Find<Button>("AddToLibrary");
 
             this.WhenActivated(disposables =>
             {
@@ -146,18 +141,6 @@ namespace HomeLibrary_Avalonia.Views
 
             });
 
-        }
-
-        private string StatusForming(int? value)
-        {
-            if(value == null)
-            {
-                return "Request failed - unable to access Core Repository.";
-            }
-            else
-            {
-                return $"TotalHints: {value}";
-            }
         }
 
         public string ToAuthorsQuery(IEnumerable<string> authorsQuery)

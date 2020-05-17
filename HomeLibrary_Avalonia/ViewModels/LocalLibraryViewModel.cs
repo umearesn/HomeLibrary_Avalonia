@@ -36,7 +36,7 @@ namespace HomeLibrary_Avalonia.ViewModels
                 .DisposeMany()
                 .Subscribe();
 
-            if(ElasticRepository.ConnectRepository() != "OK")
+            if (ElasticRepository.ConnectRepository() != "OK")
             {
                 Status = "Connection failed! Check settings and refresh connection!";
                 IsStatusEnabled = true;
@@ -84,10 +84,10 @@ namespace HomeLibrary_Avalonia.ViewModels
 
         private void DisplayLoaded(List<ArticleObject> responseMessage, int currentPage, int amountToDisplay)
         {
-            if(responseMessage != null && responseMessage.Count > 0)
+            if (responseMessage != null && responseMessage.Count > 0)
             {
                 localArticlesSource.Clear();
-                for(int i = 0; i < Math.Min(_amount, responseMessage.Count); i++)
+                for (int i = 0; i < Math.Min(_amount, responseMessage.Count); i++)
                 {
                     localArticlesSource.Add(new ArticleViewModel(responseMessage[i], this));
                 }
@@ -126,7 +126,7 @@ namespace HomeLibrary_Avalonia.ViewModels
 
             var response = await ElasticRepository.GetArticlesAsync(start, amount + 1);
 
-            if(response != null && response.Count > 0)
+            if (response != null && response.Count > 0)
             {
                 localArticlesSource.Clear();
                 for (int i = 0; i < response.Count; i++)
@@ -136,7 +136,7 @@ namespace HomeLibrary_Avalonia.ViewModels
 
                 IsNavigationVisible = localArticlesSource.Count > 0;
 
-                using(StreamWriter sw = new StreamWriter("next_debug.txt", true))
+                using (StreamWriter sw = new StreamWriter("next_debug.txt", true))
                 {
                     sw.WriteLine(DateTime.Now);
                     sw.WriteLine(response.Count > amount);
@@ -146,7 +146,7 @@ namespace HomeLibrary_Avalonia.ViewModels
                 }
 
                 CurrentPage = start / 10 + 1;
-                if(modifyButtons)
+                if (modifyButtons)
                 {
                     IsNavigationForwardEnabled = response.Count > amount;
 
@@ -210,7 +210,7 @@ namespace HomeLibrary_Avalonia.ViewModels
         }
 
         private int totalHits;
-        public int TotalHits 
+        public int TotalHits
         {
             get => totalHits;
             set => this.RaiseAndSetIfChanged(ref totalHits, value);
@@ -254,7 +254,7 @@ namespace HomeLibrary_Avalonia.ViewModels
                 //LoadArticlesAsync((CurrentPage - 2) * 10, _amount, false);
                 DisplayLoaded(response, CurrentPage - 1, _amount);
                 IsNavigationForwardEnabled = false;
-                
+
             }
             else
             {
@@ -263,11 +263,11 @@ namespace HomeLibrary_Avalonia.ViewModels
                     = await DatabaseService.SearchAsync(currentTitle, currentAuthors, currentFulltext, startIndex, 2);
                 //LoadArticlesAsync((CurrentPage - 2) * 10, _amount, false);
                 //DisplayLoaded(response, CurrentPage, 1);
-                if(response != null && response.Count > 0)
+                if (response != null && response.Count > 0)
                 {
                     localArticlesSource.Remove(articleVM);
                     localArticlesSource.Add(new ArticleViewModel(response[0], this));
-                    if(response.Count == 1)
+                    if (response.Count == 1)
                     {
                         IsNavigationForwardEnabled = false;
                     }

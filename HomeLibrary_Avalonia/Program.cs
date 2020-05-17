@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using Avalonia;
-using Avalonia.Controls;
-using Avalonia.Controls.ApplicationLifetimes;
+﻿using Avalonia;
 using Avalonia.Logging.Serilog;
 using Avalonia.ReactiveUI;
-using HomeLibrary_Avalonia.Repositories;
-using Network;
+using HomeLibrary_Avalonia.Services;
+using System;
+using System.IO;
 
 namespace HomeLibrary_Avalonia
 {
@@ -19,10 +14,21 @@ namespace HomeLibrary_Avalonia
         // yet and stuff might break.
         public static void Main(string[] args)
         {
-            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
-            //GetRequest.InitRequest();
-
-            //ElasticRepository.InitElasticRepository();
+            if (!SettingsService.UpdateServiceConfig())
+            {
+                try
+                {
+                    using (var sw = new StreamWriter("../StartupFailure.txt", true))
+                    {
+                        sw.WriteLine($"{DateTime.Now}: Invalid configuration!");
+                    }
+                }
+                catch { }
+            }
+            else
+            {
+                BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            }
         }
 
         // Avalonia configuration, don't remove; also used by visual designer.
@@ -31,27 +37,5 @@ namespace HomeLibrary_Avalonia
                 .UsePlatformDetect()
                 .LogToDebug()
                 .UseReactiveUI();
-
-        /*private void SetLanguageDictionary()
-        {
-            ResourceDictionary dict = new ResourceDictionary();
-            switch (Thread.CurrentThread.CurrentCulture.ToString())
-            {
-                case "en-US":
-                    dict.
-                    dict.Source = new Uri("..\\Resources\\StringResources.xaml",
-                                  UriKind.Relative);
-                    break;
-                case "fr-CA":
-                    dict.Source = new Uri("..\\Resources\\StringResources.fr-CA.xaml",
-                                       UriKind.Relative);
-                    break;
-                default:
-                    dict.Source = new Uri("..\\Resources\\StringResources.xaml",
-                                      UriKind.Relative);
-                    break;
-            }
-            this.Resources.MergedDictionaries.Add(dict);
-        }*/
     }
 }

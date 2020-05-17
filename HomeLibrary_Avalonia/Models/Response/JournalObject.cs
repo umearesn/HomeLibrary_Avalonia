@@ -7,7 +7,7 @@ namespace HomeLibrary_Avalonia.Models.Response
     {
         [JsonPropertyName("title")]
         public string Title { get; set; }
-        
+
         [JsonPropertyName("identifiers")]
         public List<string> Identifiers { get; set; }
     }

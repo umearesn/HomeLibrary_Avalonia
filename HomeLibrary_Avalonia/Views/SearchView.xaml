@@ -66,7 +66,7 @@
                            HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
                 <Button Grid.Row="0" Grid.Column="1" x:Name="AddToLibrary"
                         Command="{Binding AddToTheLibrary}"
-                        IsEnabled="{Binding NotAdded}"
+                        IsEnabled="{Binding CanBeAdded}"
                         Height="23" Width="23" 
                         BorderThickness="0"
                         VerticalAlignment="Top" HorizontalAlignment="Right">
@@ -104,8 +104,7 @@
       <Button x:Name="StartSearch"
               Width="150" Height="60" Content="Go searching!"
               Classes="btn"
-              TextBlock.FontWeight="Bold" TextBlock.FontSize="14"
-              Margin="10, 0, 10, 0"/>
+              TextBlock.FontWeight="Bold" TextBlock.FontSize="14"/>
 
       <TextBlock Height="6"/>
       <TextBlock x:Name="SearchStatus" TextWrapping="Wrap" TextAlignment="Center" FontSize="14"/>

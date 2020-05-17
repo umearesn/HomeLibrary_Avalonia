@@ -10,7 +10,6 @@
 
   <UserControl.Resources>
     <vm:AuthorsAsString x:Key="authors_conv"/>
-    <vm:FilePathAsSplittedString x:Key="path_conv"/>
   </UserControl.Resources>
 
   <Grid x:Name="ScreenParts">

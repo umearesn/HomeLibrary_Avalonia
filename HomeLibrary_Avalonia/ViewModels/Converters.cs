@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.IO;
 
 namespace HomeLibrary_Avalonia.ViewModels
 {
@@ -33,46 +32,32 @@ namespace HomeLibrary_Avalonia.ViewModels
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             string res = string.Empty;
-            using (StreamWriter sw = new StreamWriter("splitter_debug.txt", true))
+
+            string path = value as string;
+            if (path != null && path.Length > 0)
             {
-                
-                string path = value as string;
-                if (path != null && path.Length > 0)
+                string[] parts = path.Split('/');
+
+                List<string> segments = new List<string>();
+                int currentSegment = 0;
+                segments.Add(parts[0]);
+                for (int i = 1; i < parts.Length; i++)
                 {
-                    string[] parts = path.Split('/');
-                    sw.WriteLine("parts");
-                    foreach (var item in parts)
+                    while (segments[currentSegment].Length < 30 && i < parts.Length)
                     {
-                        sw.WriteLine(item);
-                        //sw.WriteLine();
+                        segments[currentSegment] += $"/{parts[i]}";
+                        i++;
                     }
-                    
-                    sw.WriteLine();
-                    List<string> segments = new List<string>();
-                    int currentSegment = 0;
-                    segments.Add(parts[0]);
-                    for (int i = 1; i < parts.Length; i++)
+                    if (i < parts.Length - 1)
                     {
-                        while (segments[currentSegment].Length < 30 && i < parts.Length)
-                        {
-                            sw.WriteLine($"segment length: {segments[currentSegment].Length}");
-                            segments[currentSegment] += $"/{parts[i]}";
-                            i++;
-                        }
-                        if (i < parts.Length - 1)
-                        {
-                            segments[currentSegment] += Environment.NewLine;
-                            sw.WriteLine($"{segments[currentSegment]}: {segments[currentSegment].Length}");
-                            currentSegment++;
-                            segments.Add("\t/");
-                        }
+                        segments[currentSegment] += Environment.NewLine;
+                        currentSegment++;
+                        segments.Add("\t/");
                     }
-                    foreach (var item in segments)
-                    {
-                        res += item;
-                    }
-                    sw.WriteLine(res);
-                    sw.WriteLine();
+                }
+                foreach (var item in segments)
+                {
+                    res += item;
                 }
             }
             return res;
@@ -81,5 +66,4 @@ namespace HomeLibrary_Avalonia.ViewModels
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
           => throw new NotImplementedException();
     }
-
 }

@@ -1,17 +1,17 @@
 ﻿using Avalonia.Markup.Xaml;
-using HomeLibrary_Avalonia.Models.Response;
-using ReactiveUI;
-using System;
-using System.Runtime.Serialization;
-using Splat;
-using System.Reactive;
 using DynamicData;
-using Network;
+using HomeLibrary_Avalonia.Models.Response;
 using HomeLibrary_Avalonia.Repositories;
-using System.Threading.Tasks;
-using System.Net;
-using System.Collections.ObjectModel;
 using HomeLibrary_Avalonia.Services;
+using Network;
+using ReactiveUI;
+using Splat;
+using System;
+using System.Collections.ObjectModel;
+using System.Net;
+using System.Reactive;
+using System.Runtime.Serialization;
+using System.Threading.Tasks;
 
 namespace HomeLibrary_Avalonia.ViewModels
 {
@@ -35,10 +35,10 @@ namespace HomeLibrary_Avalonia.ViewModels
 
             StartSearching = ReactiveCommand.Create(async () =>
             {
+
                 Page = 1;
                 var responseMessage
                     = await SearchService.GetArticlesAsync(SearchMode.articles, Page, TitleField, AuthorsField);
-
                 DisplayLoaded(responseMessage, Page);
             });
 
@@ -65,7 +65,7 @@ namespace HomeLibrary_Avalonia.ViewModels
             if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
             {
                 searchResultSource.Clear();
-                if(responseMessage.Item2.Data != null)
+                if (responseMessage.Item2.Data != null)
                 {
                     TotalHits = $"TotalHits:{responseMessage.Item2.TotalHits}.";
                     IsStatusEnabled = true;
@@ -82,7 +82,7 @@ namespace HomeLibrary_Avalonia.ViewModels
                     {
                         IsNavigationBackEnabled = true;
                     }
-                    if(Page == ((responseMessage.Item2.TotalHits + 9) / 10))
+                    if (Page == ((responseMessage.Item2.TotalHits + 9) / 10))
                     {
                         IsNavigationForwardEnabled = false;
                     }
@@ -96,6 +96,11 @@ namespace HomeLibrary_Avalonia.ViewModels
                     TotalHits = $"Failed to find any data!";
                     IsStatusEnabled = true;
                 }
+            }
+            else
+            {
+                TotalHits = $"Search failed: {responseMessage.Item1}";
+                IsStatusEnabled = true;
             }
         }
 

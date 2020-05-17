@@ -23,7 +23,7 @@ namespace HomeLibrary_Avalonia.Repositories
 
             if (host == null || port == null)
             {
-                result = "Configuration error: Elaticsearch host or port is not given";         
+                result = "Configuration error: Elaticsearch host or port is not given";
             }
             else
             {
@@ -56,59 +56,19 @@ namespace HomeLibrary_Avalonia.Repositories
                 {
                     result = $"ConfigurationError: {ex.Message}.";
                 }
-                
+
             }
             return result;
         }
 
-        /*static ElasticRepository()
-        {
-            using (StreamWriter sw = new StreamWriter("ElasticRepo.log", true))
-            {
-                sw.WriteLine($"Trying to onnect to {elasticHost}:{elasticPort} [HighLevel] at {DateTime.Now}.");
-            }
-            ConnectionSettings connectionSettings = new ConnectionSettings(new Uri($"{elasticHost}:{elasticPort}"))
-                .DefaultMappingFor<ArticleObject>(i => i
-                    .IndexName("articles")
-                    .IdProperty(p => p.Id)
-                )
-                .EnableDebugMode()
-                .PrettyJson()
-                .DefaultIndex("articles")
-                .RequestTimeout(TimeSpan.FromSeconds(10));
-            elasticClient = new ElasticClient(connectionSettings);
-            using (StreamWriter sw = new StreamWriter("ElasticRepo.log", true))
-            {
-                sw.WriteLine($"Connected to {elasticHost}:{elasticPort} [HighLevel] at {DateTime.Now}.");
-            }
-        }*/
-
         public static IndexResponse PutArticle(ArticleObject article)
         {
             var res = elasticClient.Index(article, i => i.Index("articles"));
-            using (StreamWriter sw = new StreamWriter("PutArticle.txt", true))
-            {
-                /*sw.WriteLine(article.Journals.Count);
-                foreach (var item in article.Journals)
-                {
-                    foreach (var item_internal in item.Identifiers)
-                    {
-                        sw.WriteLine(item_internal);
-                    }
-                    
-                }*/
-                sw.WriteLine(res.DebugInformation);
-                sw.WriteLine($"{DateTime.Now} added {article.Title}");
-            }
             return res;
         }
 
         public static async Task<IndexResponse> PutArticleAsync(ArticleObject article)
         {
-            using (StreamWriter sw = new StreamWriter("InvokingPut.txt", true))
-            { 
-                sw.WriteLine($"{DateTime.Now} started putting {article.Title}");
-            }
             return await Task.Run(() => PutArticle(article));
         }
 
@@ -172,7 +132,7 @@ namespace HomeLibrary_Avalonia.Repositories
                             .Field("authors")
                             .Query(authors[0])
                         );
-                for(int i = 1; i < authors.Count; i++)
+                for (int i = 1; i < authors.Count; i++)
                 {
                     authorsQuery = authorsQuery || authorsDescriptor
                         .Match(m => m
@@ -180,7 +140,7 @@ namespace HomeLibrary_Avalonia.Repositories
                             .Query(authors[i])
                         );
                 }
-                if(combination != null)
+                if (combination != null)
                 {
                     combination = combination && authorsQuery;
                 }
@@ -189,7 +149,7 @@ namespace HomeLibrary_Avalonia.Repositories
                     combination = authorsQuery;
                 }
             }
-            
+
             QueryContainer fulltextQuery = null;
             if (fulltext != null && fulltext.Trim().Length > 0)
             {

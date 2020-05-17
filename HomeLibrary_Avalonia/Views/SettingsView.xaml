@@ -49,6 +49,11 @@
         <Button Width="150" Height="60" Command="{Binding SaveChanges}" Classes="btn">
           <TextBlock Text="Save changes" FontSize="17" FontWeight="Bold"/>
         </Button>
+
+        <TextBlock Height="30"/>
+
+        <TextBlock x:Name="Status" Height="30" FontSize="20" Foreground="Red" FontWeight="Bold"/>
+
       </StackPanel>
     </Grid>
   </ScrollViewer>

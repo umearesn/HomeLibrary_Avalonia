@@ -18,6 +18,19 @@ namespace HomeLibrary_Avalonia.ViewModels
         {
             HostScreen = screen ?? Locator.Current.GetService<IScreen>();
 
+            string dir;
+            try
+            {
+                dir = ConfigurationManager.ConnectionStrings["PdfDir"].ConnectionString;
+                dir = Path.GetFullPath(dir);
+                SettingsService.UpdatePath(dir);
+            }
+            catch
+            {
+                SettingsService.UpdateKey("PdfDir", "Invalid path!");
+            }
+            ApplyChanges();
+
             ReadKey("CoreBaseUrl", "CoreUrl");
             ReadKey("CoreApiKey", "CoreApiKey");
             ReadKey("ElasticHost", "ElasticHost");
@@ -29,12 +42,6 @@ namespace HomeLibrary_Avalonia.ViewModels
                 clicked++;
                 try
                 {
-
-                    using (StreamWriter sw = new StreamWriter("entered.txt"))
-                    {
-                        sw.WriteLine($"entered {clicked}");
-                    }
-
                     if (SettingsService.IsConnectionSectionAbsent)
                     {
                         SettingsService.AddConnectionSection();
@@ -44,31 +51,19 @@ namespace HomeLibrary_Avalonia.ViewModels
                     SettingsService.UpdateKey("CoreApiKey", CoreApiKey);
                     SettingsService.UpdateKey("ElasticHost", ElasticHost);
                     SettingsService.UpdateKey("ElasticPort", ElasticPort);
-                    SettingsService.UpdateKey("PdfDir", Directory);
+                    SettingsService.UpdatePath(Directory);
 
-                    using (StreamWriter sw = new StreamWriter("ConfigDebug.txt", true))
-                    {
-                        sw.WriteLine(DateTime.Now);
-                        sw.WriteLine(CoreUrl);
-                        sw.WriteLine(CoreApiKey);
-                        sw.WriteLine(ElasticHost);
-                        sw.WriteLine(ElasticPort);
-                        sw.WriteLine(Directory);
-                    }
-
-                    SettingsService.ApplyChanges();
-                    //config.Save(ConfigurationSaveMode.Modified);
-                    //ConfigurationManager.RefreshSection("connectionStrings");
+                    ApplyChanges();
+                    ReadKey("PdfDir", "Directory");
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
-                    using (StreamWriter sw = new StreamWriter("Settings_catch.txt", true))
+                    using (StreamWriter sw = new StreamWriter("log.txt", true))
                     {
-                        sw.WriteLine(DateTime.Now);
-                        sw.WriteLine(ex.Message);
+                        sw.WriteLine($"{DateTime.Now}: {ex.Message}");
                     }
                 }
-                
+
             });
         }
 
@@ -108,7 +103,14 @@ namespace HomeLibrary_Avalonia.ViewModels
             get => directory;
             set => this.RaiseAndSetIfChanged(ref directory, value);
         }
-        
+
+        private string status = string.Empty;
+        public string Status
+        {
+            get => status;
+            set => this.RaiseAndSetIfChanged(ref status, value);
+        }
+
         private void ReadKey(string key, string propName)
         {
             string propValue;
@@ -125,13 +127,16 @@ namespace HomeLibrary_Avalonia.ViewModels
 
         public ReactiveCommand<Unit, Unit> SaveChanges { get; }
 
-        private ConnectionStringSettings CreateConnectionString(string name, string value)
+        private void ApplyChanges()
         {
-            ConnectionStringSettings connString = new ConnectionStringSettings();
-            connString.Name = name;
-            connString.ConnectionString = value;
-            return connString;
+            try
+            {
+                SettingsService.ApplyChanges();
+            }
+            catch (Exception ex)
+            {
+                Status = $"Cannot apply changes: config file was changed from the outside.{Environment.NewLine}Please, restart the app!";
+            }
         }
-
     }
 }

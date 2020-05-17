@@ -1,15 +1,15 @@
-﻿using Nest;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Configuration;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace HomeLibrary_Avalonia.Services
 {
     public static class SettingsService
     {
+        /*static SettingsService()
+        {
+            UpdateServiceConfig();
+        }*/
         /// <summary>
         /// Checks the validity of app configuration.
         /// </summary>
@@ -52,11 +52,11 @@ namespace HomeLibrary_Avalonia.Services
                     .OpenExeConfiguration(ConfigurationUserLevel.None);
                 return true;
             }
-            catch( Exception ex)
+            catch (Exception ex)
             {
-                using(StreamWriter sw = new StreamWriter("ConfigLoadingFailure.txt", true))
+                using (StreamWriter sw = new StreamWriter("log.txt", true))
                 {
-                    sw.WriteLine($"{DateTime.Now}: {ex.Message}.\n");
+                    sw.WriteLine($"{DateTime.Now}: Config loading failure.txt - {ex.Message}.");
                 }
                 return false;
             }
@@ -83,10 +83,10 @@ namespace HomeLibrary_Avalonia.Services
             }
             return propValue;
         }
-        
+
         public static void UpdateKey(string connStringName, string connString)
         {
-            if(config.ConnectionStrings.ConnectionStrings[connStringName] == null)
+            if (config.ConnectionStrings.ConnectionStrings[connStringName] == null)
             {
                 config.ConnectionStrings.ConnectionStrings
                             .Add(CreateConnectionString(connStringName, connString));
@@ -96,6 +96,16 @@ namespace HomeLibrary_Avalonia.Services
                 config.ConnectionStrings.ConnectionStrings[connStringName]
                         .ConnectionString = connString;
             }
+        }
+
+        public static void UpdatePath(string value)
+        {
+            string path = Path.GetFullPath(value);
+            if (!Directory.Exists(path))
+            {
+                path = "Directory doesn't exist!";
+            }
+            UpdateKey("PdfDir", path);
         }
 
         /// <summary>

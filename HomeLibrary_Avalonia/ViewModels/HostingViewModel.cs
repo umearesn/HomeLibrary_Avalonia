@@ -1,6 +1,4 @@
-﻿using Avalonia.Controls;
-using HomeLibrary_Avalonia.Repositories;
-using HomeLibrary_Avalonia.Views;
+﻿using HomeLibrary_Avalonia.Repositories;
 using ReactiveUI;
 using System.Reactive;
 using System.Runtime.Serialization;
@@ -13,7 +11,7 @@ namespace HomeLibrary_Avalonia.ViewModels
         public enum ButtonNames { GoSearching, GoLocal, GoSettings };
 
         private RoutingState _router = new RoutingState();
-        
+
         [DataMember]
         public RoutingState Router
         {

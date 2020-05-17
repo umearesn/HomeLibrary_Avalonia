@@ -8,7 +8,7 @@ namespace HomeLibrary_Avalonia.Services
         public static List<string> ProvideAuthors(string authors)
         {
             List<string> result;
-            if(authors == null || authors.Trim() == string.Empty)
+            if (authors == null || authors.Trim() == string.Empty)
             {
                 result = null;
             }

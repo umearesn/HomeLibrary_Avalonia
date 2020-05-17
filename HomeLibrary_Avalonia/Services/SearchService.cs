@@ -1,9 +1,7 @@
 ﻿using HomeLibrary_Avalonia.Models.Response;
 using HomeLibrary_Avalonia.Repositories;
 using Network;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace HomeLibrary_Avalonia.Services
@@ -13,20 +11,12 @@ namespace HomeLibrary_Avalonia.Services
     {
         static public CoreRepository repo = new CoreRepository();
 
-        static public string BuildRequest(string url, string apikey, 
+        static public string BuildRequest(string url, string apikey,
             SearchMode mode, int page = 1, string title = null, IEnumerable<string> authors = null)
         {
             GetRequest request = new GetRequest(url, apikey, mode);
             if (title != null && title.Trim() != string.Empty) request.SetTitle(new List<string>() { title });
             if (authors != null) request.SetAuthors(new List<string>(authors));
-            
-            using(StreamWriter sw = new StreamWriter("BuilderDebug.txt", true))
-            {
-                sw.WriteLine($"{DateTime.Now}: {url}, {apikey}.");
-                sw.WriteLine(request.GetAsString(page));
-                sw.WriteLine();
-            }
-
             return request.GetAsString(page);
         }
 
@@ -37,10 +27,10 @@ namespace HomeLibrary_Avalonia.Services
             Task<(string, ResponseBody<ArticleObject>)> requestResult;
             (string url, string key) = SettingsService.GetCoreInfo();
 
-            if(url == null || key == null)
+            if (url == null || key == null || url == string.Empty || key == string.Empty)
             {
-                string result = "Configuration error: Core URL or API key is not given";
-                requestResult = new Task<(string, ResponseBody<ArticleObject>)>(() => (result, null));
+                string result = "Configuration error: Core URL or API key is not given.";
+                requestResult = new Task<(string, ResponseBody<ArticleObject>)>(() => { return (result, null); });
             }
             else
             {
@@ -48,7 +38,7 @@ namespace HomeLibrary_Avalonia.Services
                 requestResult = repo.GetArticlesAsync(request);
             }
             return requestResult;
-            
+
         }
 
         static public Task<(string, ResponseBody<ArticleObject>)> GetFulltextArticle(string id)

@@ -3,7 +3,6 @@ using HomeLibrary_Avalonia.Repositories;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace HomeLibrary_Avalonia.Services
@@ -13,7 +12,7 @@ namespace HomeLibrary_Avalonia.Services
 
         public static Task<List<ArticleObject>> SearchAsync(string title, string authors, string fulltext, int start, int amount = 10)
         {
-            using(StreamWriter sw = new StreamWriter("databaseServiceDebug.txt", true))
+            using (StreamWriter sw = new StreamWriter("databaseServiceDebug.txt", true))
             {
                 sw.WriteLine(DateTime.Now);
                 sw.WriteLine(title);

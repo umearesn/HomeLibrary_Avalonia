@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using System.Globalization;
 using System.Text.Json.Serialization;
-using Network;
 
 namespace HomeLibrary_Avalonia.Models.Response
 {
@@ -10,10 +8,10 @@ namespace HomeLibrary_Avalonia.Models.Response
 
         [JsonPropertyName("status")]
         public string Status { get; set; }
-        
+
         [JsonPropertyName("totalHits")]
         public int TotalHits { get; set; }
-        
+
         [JsonPropertyName("data")]
         public List<T> Data { get; set; }
     }
