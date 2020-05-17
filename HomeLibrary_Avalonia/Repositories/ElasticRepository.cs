@@ -3,7 +3,6 @@ using HomeLibrary_Avalonia.Services;
 using Nest;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace HomeLibrary_Avalonia.Repositories
