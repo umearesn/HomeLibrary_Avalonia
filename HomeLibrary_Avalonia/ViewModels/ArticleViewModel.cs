@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Reactive;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace HomeLibrary_Avalonia.ViewModels
@@ -158,8 +159,15 @@ namespace HomeLibrary_Avalonia.ViewModels
 
             OpenFile = ReactiveCommand.Create(() => 
             {
-                string path = Path.GetFullPath(pdfPath);
-                Process.Start("explorer.exe", @$"{path}");
+                try
+                {
+                    string path = Path.GetFullPath(pdfPath);
+                    Process.Start("explorer.exe", @$"{path}");
+                }
+                catch
+                {
+                    PdfPath = "OpeningFailed!";
+                }
             });
         }
 
@@ -173,18 +181,7 @@ namespace HomeLibrary_Avalonia.ViewModels
                 {
                     article.PdfPath = GetName(Article, IsCoreLink(loadingLink));
                     PdfPath = article.PdfPath;
-                    using (StreamWriter sw = new StreamWriter("startedLoading.txt", true))
-                    {
-                        sw.WriteLine($"{DateTime.Now}: started {article.PdfPath}.");
-                        sw.WriteLine(loadingLink);
-                        sw.WriteLine();
-                    }
                     await SearchService.LoadPdf(PdfPath, loadingLink);
-                    using (StreamWriter sw = new StreamWriter("endedLoading.txt", true))
-                    {
-                        sw.WriteLine($"{DateTime.Now}: finished.");
-                        sw.WriteLine();
-                    }
                 }
                 catch (Exception ex)
                 {
@@ -208,17 +205,21 @@ namespace HomeLibrary_Avalonia.ViewModels
             string authors = string.Empty;
             if (article.Authors != null && article.Authors.Count > 0)
             {
-                if (article.Authors.Count == 1)
-                {
-                    authors = article.Authors[0];
-                }
-                for (int i = 1; i < article.Authors.Count; i++)
-                {
-                    authors += $", {article.Authors[i]}";
-                }
+                authors = $"-{article.Authors[0]}";
             }
             authors.Trim();
-            string result = $"{article.Title}-{authors}-{DateTime.Now.Ticks}";
+            authors = Regex.Replace(authors, @"\t|\n|\r", "");
+
+            string title = Regex.Replace(article.Title, @"\t|\n|\r", "");
+            title = title.Substring(0, 50);
+            int i = 49;
+            while(title[i] != ' ')
+            {
+                i--;
+            }
+            title = title.Substring(0, i + 1);
+
+            string result = $"{title}-{authors}-{DateTime.Now.Ticks}";
             if (isCoreLink)
             {
                 result = $"{result}.pdf";
@@ -228,16 +229,16 @@ namespace HomeLibrary_Avalonia.ViewModels
                 result = $"{result}.txt";
             }
             result = RemoveProhibitedSymbolsWindows(result);
-            return $"{directory}/{result}";
+            return $"{directory}\\{result}";
         }
 
         private string RemoveProhibitedSymbolsWindows(string name)
         {
-            char[] prohibited = {'\\', '/', ':', '*', '?', '"', '<', '>', '|', '+' };
+            char[] prohibited = {'\\', '/', ':', '*', '?', '"', '<', '>', '|', '+', '$', '_', '{', '}' };
             string result = name;
             foreach (var item in prohibited)
             {
-                result = result.Replace(item, ' ');
+                result = result.Replace(item.ToString(), string.Empty);
             }
             result = result.Replace(',', '-');
             return result;
