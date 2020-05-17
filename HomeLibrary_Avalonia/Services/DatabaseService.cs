@@ -12,14 +12,6 @@ namespace HomeLibrary_Avalonia.Services
 
         public static Task<List<ArticleObject>> SearchAsync(string title, string authors, string fulltext, int start, int amount = 10)
         {
-            using (StreamWriter sw = new StreamWriter("databaseServiceDebug.txt", true))
-            {
-                sw.WriteLine(DateTime.Now);
-                sw.WriteLine(title);
-                sw.WriteLine(ConvertersService.ProvideAuthors(authors));
-                sw.WriteLine(fulltext);
-                sw.WriteLine();
-            }
             return ElasticRepository
                 .SearchArticlesAsync(title, ConvertersService.ProvideAuthors(authors), fulltext, start, amount);
         }

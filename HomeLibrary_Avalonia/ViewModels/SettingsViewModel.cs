@@ -58,10 +58,14 @@ namespace HomeLibrary_Avalonia.ViewModels
                 }
                 catch (Exception ex)
                 {
-                    using (StreamWriter sw = new StreamWriter("log.txt", true))
+                    try
                     {
-                        sw.WriteLine($"{DateTime.Now}: {ex.Message}");
+                        using (StreamWriter sw = new StreamWriter("log.txt", true))
+                        {
+                            sw.WriteLine($"{DateTime.Now}: {ex.Message}");
+                        }
                     }
+                    catch { }
                 }
 
             });

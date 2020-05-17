@@ -116,64 +116,6 @@ namespace HomeLibrary_Avalonia.ViewModels
             }
         }
 
-
-        private async void LoadArticlesAsync(int start = 0, int amount = _amount, bool modifyButtons = true)
-        {
-            using (StreamWriter sw = new StreamWriter("AsyncLoadingDebug.txt", true))
-            {
-                sw.WriteLine($"{DateTime.Now} loading started!");
-            }
-
-            var response = await ElasticRepository.GetArticlesAsync(start, amount + 1);
-
-            if (response != null && response.Count > 0)
-            {
-                localArticlesSource.Clear();
-                for (int i = 0; i < response.Count; i++)
-                {
-                    localArticlesSource.Add(new ArticleViewModel(response[i], this));
-                }
-
-                IsNavigationVisible = localArticlesSource.Count > 0;
-
-                using (StreamWriter sw = new StreamWriter("next_debug.txt", true))
-                {
-                    sw.WriteLine(DateTime.Now);
-                    sw.WriteLine(response.Count > amount);
-                    sw.WriteLine(CurrentPage);
-                    sw.WriteLine(start);
-                    sw.WriteLine();
-                }
-
-                CurrentPage = start / 10 + 1;
-                if (modifyButtons)
-                {
-                    IsNavigationForwardEnabled = response.Count > amount;
-
-
-                    IsNavigationBackEnabled = CurrentPage != 1;
-                }
-
-            }
-
-            using (StreamWriter sw = new StreamWriter("AsyncLoadingDebug.txt", true))
-            {
-                foreach (var item in localArticles)
-                {
-                    sw.WriteLine(item);
-                    foreach (var str in item.Article.Authors)
-                    {
-                        byte[] bytes = Encoding.Default.GetBytes(str);
-                        string res = Encoding.ASCII
-                            .GetString(bytes);
-                        sw.WriteLine(res);
-                    }
-                    sw.WriteLine(item.Article.Fulltext == null);
-                }
-                sw.WriteLine($"{DateTime.Now} loading ended!");
-            }
-        }
-
         private bool isNavigationVisible = false;
         public bool IsNavigationVisible
         {

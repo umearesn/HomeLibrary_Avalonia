@@ -6,10 +6,6 @@ namespace HomeLibrary_Avalonia.Services
 {
     public static class SettingsService
     {
-        /*static SettingsService()
-        {
-            UpdateServiceConfig();
-        }*/
         /// <summary>
         /// Checks the validity of app configuration.
         /// </summary>
@@ -54,10 +50,15 @@ namespace HomeLibrary_Avalonia.Services
             }
             catch (Exception ex)
             {
-                using (StreamWriter sw = new StreamWriter("log.txt", true))
+
+                try
                 {
-                    sw.WriteLine($"{DateTime.Now}: Config loading failure.txt - {ex.Message}.");
+                    using (StreamWriter sw = new StreamWriter("log.txt", true))
+                    {
+                        sw.WriteLine($"{DateTime.Now}: Config loading failure.txt - {ex.Message}.");
+                    }
                 }
+                catch { }
                 return false;
             }
         }

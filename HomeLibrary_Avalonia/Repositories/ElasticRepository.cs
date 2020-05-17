@@ -32,11 +32,6 @@ namespace HomeLibrary_Avalonia.Repositories
                     result = "OK";
                     elasticHost = host;
                     elasticPort = port;
-                    using (StreamWriter sw = new StreamWriter("ElasticRepo.log", true))
-                    {
-                        sw.WriteLine($"Trying to onnect to {elasticHost}:{elasticPort} [HighLevel] at {DateTime.Now}.");
-                        sw.WriteLine($"{elasticHost}:{elasticPort}");
-                    }
                     ConnectionSettings connectionSettings = new ConnectionSettings(new Uri($"{elasticHost}:{elasticPort}"))
                         .DefaultMappingFor<ArticleObject>(i => i
                             .IndexName("articles")
@@ -47,10 +42,6 @@ namespace HomeLibrary_Avalonia.Repositories
                         .DefaultIndex("articles")
                         .RequestTimeout(TimeSpan.FromSeconds(10));
                     elasticClient = new ElasticClient(connectionSettings);
-                    using (StreamWriter sw = new StreamWriter("ElasticRepo.log", true))
-                    {
-                        sw.WriteLine($"Connected to {elasticHost}:{elasticPort} [HighLevel] at {DateTime.Now}.");
-                    }
                 }
                 catch (Exception ex)
                 {
