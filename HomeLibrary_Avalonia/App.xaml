@@ -6,12 +6,48 @@
     <local:ViewLocator/>
   </Application.DataTemplates>
 
+  <Application.Resources>
+    <SolidColorBrush x:Key="Orange">#FFDD4812</SolidColorBrush>
+    <SolidColorBrush x:Key="DarkOrange">#FFB13A10</SolidColorBrush>
+  </Application.Resources>
+  
   <Application.Styles>
     <StyleInclude Source="avares://Avalonia.Themes.Default/DefaultTheme.xaml"/>
     <StyleInclude Source="avares://Avalonia.Themes.Default/Accents/BaseLight.xaml"/>
+    
+    <Style Selector="Button.btn /template/ ContentPresenter">
+      <Setter Property="CornerRadius" Value="10" />
+    </Style>
+    <Style Selector="Button.btn">
+      <Setter Property="Foreground" Value="White" />
+      <Setter Property="BorderThickness" Value="2" />
+      <Setter Property="Background" Value="{DynamicResource Orange}" />
+      <Setter Property="BorderBrush" Value="#FFFFFFFF" />
+    </Style>
+    <Style Selector="Button:pointerover.btn /template/ ContentPresenter">
+      <Setter Property="BorderBrush" Value="{DynamicResource DarkOrange}" />
+      <Setter Property="Background" Value="{DynamicResource DarkOrange}" />
+    </Style>
+
+    <Style Selector="Button.art /template/ ContentPresenter">
+      <Setter Property="CornerRadius" Value="5" />
+    </Style>
+    <Style Selector="Button.art">
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="BorderBrush" Value="{DynamicResource Orange}" />
+    </Style>
+    <Style Selector="Button:pointerover.art /template/ ContentPresenter">
+      <Setter Property="BorderBrush" Value="{DynamicResource DarkOrange}" />
+    </Style>
+
+    <Style Selector="TextBox.box /template/ ContentPresenter">
+      <Setter Property="CornerRadius" Value="20" />
+    </Style>
+    <Style Selector="TextBox.box">
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="BorderBrush" Value="{DynamicResource Orange}"/>
+      <Setter Property="FontSize" Value="14"/>
+    </Style>
   </Application.Styles>
-  
-  <Application.Resources>
-  </Application.Resources>
 
 </Application>

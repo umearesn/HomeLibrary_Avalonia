@@ -23,22 +23,20 @@
     <Grid Grid.Column="1" x:Name="ResultsPanel">
       <Grid.RowDefinitions>
         <RowDefinition Height="60"/>
-        <RowDefinition Height="Auto"/>
-        <RowDefinition Height="*" MinHeight="320"/>
+        <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
       <!-- Top panel with navigation panels. -->
       <Panel Grid.Row="0" Height="60"
-                   VerticalAlignment="Bottom" Background="Black">
+                   VerticalAlignment="Bottom">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-          <Button x:Name="PrevPage" Width="25" Height="25" Margin="10" Background="Black">
+          <Button x:Name="PrevPage" Width="35" Height="35" Margin="10" Classes="btn">
             <Image Source="resm:HomeLibrary_Avalonia.Assets.Controls.BackArrow.png"/>
           </Button>
           <StackPanel x:Name="NavigationPanel" Orientation="Horizontal">
             <TextBlock x:Name="CurPage" Width="32" Height="30"
-                       Background="Black"
-                       Text="999" Foreground="White" FontSize="15" TextAlignment="Center"/>
-            <Button x:Name="NextPage" Width="25" Height="25" Margin="10" Background="Black">
+                       FontSize="15" TextAlignment="Center"/>
+            <Button x:Name="NextPage" Width="35" Height="35" Margin="10" Classes="btn">
               <Image Source="resm:HomeLibrary_Avalonia.Assets.Controls.ForwardArrow.png"/>
             </Button>
           </StackPanel>
@@ -46,69 +44,71 @@
       </Panel>
             
       <!-- List with search responses. -->
-      <ScrollViewer Grid.Row="2"
-                    HorizontalScrollBarVisibility="Disabled"
-                    VerticalScrollBarVisibility="Auto">
-        <ListBox x:Name="SearchResultList">
-          <ListBox.ItemTemplate>
-            <DataTemplate DataType="{x:Type vm:ArticleViewModel}">
-              <Button HorizontalContentAlignment="Stretch">
-                <Grid>
-                  <Grid.RowDefinitions>
-                    <RowDefinition Height="*" MinHeight="30"/>
-                    <RowDefinition Height="*" MinHeight="30"/>
-                  </Grid.RowDefinitions>
-                  <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="30"/>
-                  </Grid.ColumnDefinitions>
-                  <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Article.Title}"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
-                  <TextBlock Grid.Row="1" Grid.Column="0"
-                             Text="{Binding Article.Authors, Converter={StaticResource authors_conv}}"
-                             HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
-                  <Button Grid.Row="0" Grid.Column="1" x:Name="AddToLibrary"
-                          Command="{Binding AddToTheLibrary}"
-                          IsEnabled="{Binding NotAdded}"
-                          Height="23" Width="23" Content=":"
-                          VerticalAlignment="Top" HorizontalAlignment="Right">
-                    <Image Source="resm:HomeLibrary_Avalonia.Assets.Controls.Favourites.png"/>
-                  </Button>
-                </Grid>
-              </Button>
-            </DataTemplate>
-          </ListBox.ItemTemplate>
-        </ListBox>
-      </ScrollViewer>
-
+      <ListBox Grid.Row="1" x:Name="SearchResultList"
+               ScrollViewer.VerticalScrollBarVisibility="Auto"
+               ScrollViewer.HorizontalScrollBarVisibility="Auto">
+        <ListBox.ItemTemplate>
+          <DataTemplate DataType="{x:Type vm:ArticleViewModel}">
+            <Button HorizontalContentAlignment="Stretch" Classes="art">
+              <Grid>
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="*" MinHeight="30"/>
+                  <RowDefinition Height="*" MinHeight="30"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*"/>
+                  <ColumnDefinition Width="30"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Article.Title}"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
+                <TextBlock Grid.Row="1" Grid.Column="0"
+                           Text="{Binding Article.Authors, Converter={StaticResource authors_conv}}"
+                           HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
+                <Button Grid.Row="0" Grid.Column="1" x:Name="AddToLibrary"
+                        Command="{Binding AddToTheLibrary}"
+                        IsEnabled="{Binding NotAdded}"
+                        Height="23" Width="23" 
+                        BorderThickness="0"
+                        VerticalAlignment="Top" HorizontalAlignment="Right">
+                  <Image Source="resm:HomeLibrary_Avalonia.Assets.Controls.Favourites.png"/>
+                </Button>
+              </Grid>
+            </Button>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+        
     </Grid>
 
 
     <!-- Search request builder. -->
-    <StackPanel Grid.Column="0" x:Name="SearchPanel" Margin="10, 0, 10, 0" >
+    <StackPanel Grid.Column="0" x:Name="SearchPanel" >
 
       <!-- Title field. -->
       <StackPanel>
-        <TextBlock Height="6"/>
+        <TextBlock Height="8"/>
         <TextBlock Text="Search by title:" Height="24"
-                    HorizontalAlignment="Center"/>
-        <TextBox  x:Name="TitleQuery" Height="30" />
+                   HorizontalAlignment="Center" FontSize="14"/>   
+        <TextBox  x:Name="TitleQuery" Height="30"  Margin="10, 0, 10, 0" Classes="box" />
       </StackPanel>
 
       <!-- Authors field. -->
       <StackPanel>
-        <TextBlock Height="6"/>
+        <TextBlock Height="8"/>
         <TextBlock Text="Search by authors:" Height="24"
-                    HorizontalAlignment="Center"/>
-        <TextBox x:Name="AuthorsQuery" Height="30" />
+                   HorizontalAlignment="Center" FontSize="14"/>
+        <TextBox x:Name="AuthorsQuery" Height="30" Margin="10, 0, 10, 0" Classes="box"/>
       </StackPanel>
 
-      <TextBlock Height="6"/>
+      <TextBlock Height="8"/>
       <Button x:Name="StartSearch"
-              Width="150" Height="60" Content="Go searching!"/>
+              Width="150" Height="60" Content="Go searching!"
+              Classes="btn"
+              TextBlock.FontWeight="Bold" TextBlock.FontSize="14"
+              Margin="10, 0, 10, 0"/>
 
       <TextBlock Height="6"/>
-      <TextBlock x:Name="SearchStatus"/>
+      <TextBlock x:Name="SearchStatus" TextWrapping="Wrap" TextAlignment="Center" FontSize="14"/>
       
     </StackPanel>
   </Grid>

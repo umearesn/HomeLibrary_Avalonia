@@ -28,16 +28,15 @@
 
       <!-- Top panel with navigation panels. -->
       <Panel Grid.Row="0" Height="60"
-                   VerticalAlignment="Bottom" Background="Black">
+                   VerticalAlignment="Bottom">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-          <Button x:Name="PrevPage" Width="25" Height="25" Margin="10" Background="Black">
+          <Button x:Name="PrevPage" Width="35" Height="35" Margin="10" Classes="btn">
             <Image Source="resm:HomeLibrary_Avalonia.Assets.Controls.BackArrow.png"/>
           </Button>
           <StackPanel x:Name="NavigationPanel" Orientation="Horizontal">
             <TextBlock x:Name="CurPage" Width="32" Height="30"
-                       Background="Black"
-                       Text="999" Foreground="White" FontSize="15" TextAlignment="Center"/>
-            <Button x:Name="NextPage" Width="25" Height="25" Margin="10" Background="Black">
+                       FontSize="15" TextAlignment="Center"/>
+            <Button x:Name="NextPage" Width="35" Height="35" Margin="10" Classes="btn">
               <Image Source="resm:HomeLibrary_Avalonia.Assets.Controls.ForwardArrow.png"/>
             </Button>
           </StackPanel>
@@ -49,7 +48,7 @@
         <ListBox Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto" x:Name="LocalArticlesList">
           <ListBox.ItemTemplate>
             <DataTemplate DataType="{x:Type vm:ArticleViewModel}">
-              <Button HorizontalContentAlignment="Stretch"  Command="{Binding OpenFile}">
+              <Button HorizontalContentAlignment="Stretch"  Command="{Binding OpenFile}" Classes="art">
                 <Grid>
                   <Grid.RowDefinitions>
                     <RowDefinition Height="*" MinHeight="30"/>
@@ -67,19 +66,20 @@
                   <TextBlock Grid.Row="1" Grid.Column="0"
                              Text="{Binding Article.Authors, Converter={StaticResource authors_conv}}"
                              HorizontalAlignment="Left" VerticalAlignment="Center" TextWrapping="Wrap" Margin="5"/>
-                  <Button Grid.Row="0" Grid.Column="1" Height="23" Width="23" Content=":"
+                  <Button Grid.Row="0" Grid.Column="1" Height="23" Width="23"
+                          BorderThickness="0"
                           Command="{Binding DeleteFromTheLibrary}"
                           VerticalAlignment="Top" HorizontalAlignment="Right">
                     <Image Source="resm:HomeLibrary_Avalonia.Assets.Controls.Delete.png"/>
                   </Button> 
                   <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center">
                     <TextBlock Text="Доступен ли текст?" HorizontalAlignment="Left"/>
-                    <CheckBox x:Name="IsFulltextAvailable" IsEnabled="False" IsChecked="{Binding IsFullTextPresented}" HorizontalAlignment="Right"/>
+                    <CheckBox x:Name="IsFulltextAvailable" IsEnabled="False"
+                              IsChecked="{Binding IsFullTextPresented}" HorizontalAlignment="Right"
+                              BorderThickness="0"/>
                   </StackPanel>
                   <TextBlock Grid.Row="3" Text="File location:"/>
                   <TextBlock Grid.Row="4" x:Name="FileLocation" Text="{Binding PdfPath}" TextWrapping="Wrap"/>
-                  
-                  
                 </Grid>
               </Button>
             </DataTemplate>
@@ -94,34 +94,35 @@
       
       <!-- Title field. -->
       <StackPanel>
-        <!--TextBlock Height="6"/-->
-        <TextBlock Text="Search by title:" Height="24"
+        <TextBlock Height="8"/>
+        <TextBlock Text="Search by title:" Height="24" FontSize="14"
                     HorizontalAlignment="Center"/>
-        <TextBox  x:Name="TitleField" Height="30" />
+        <TextBox x:Name="TitleField" Height="30" Classes="box"/>
       </StackPanel>
 
       <!-- Authors field. -->
       <StackPanel>
-        <TextBlock Height="6"/>
-        <TextBlock Text="Search by authors:" Height="24"
-                    HorizontalAlignment="Center"/>
-        <TextBox x:Name="AuthorsField" Height="30" />
+        <TextBlock Height="8"/>
+        <TextBlock Text="Search by authors:" Height="24" FontSize="14"
+                   HorizontalAlignment="Center"/>
+        <TextBox x:Name="AuthorsField" Height="30" Classes="box"/>
       </StackPanel>
 
       <!-- Fulltext field. -->
       <StackPanel>
-        <TextBlock Height="6"/>
-        <TextBlock Text="Fulltext search:" Height="24"
+        <TextBlock Height="8"/>
+        <TextBlock Text="Fulltext search:" Height="24" FontSize="14"
                     HorizontalAlignment="Center"/>
-        <TextBox x:Name="FulltextField" Height="30" />
+        <TextBox x:Name="FulltextField" Height="30" Classes="box"/>
       </StackPanel>
       
       <TextBlock Height="6"/>
-      <Button x:Name="StartSearch"
+      <Button x:Name="StartSearch" Classes="btn"
+              TextBlock.FontWeight="Bold" TextBlock.FontSize="14"
               Width="150" Height="60" Content="Go searching!"/>
 
       <TextBlock Height="6"/>
-      <TextBlock x:Name="SearchStatus" TextWrapping="Wrap" TextAlignment="Center"/>
+      <TextBlock x:Name="SearchStatus" TextWrapping="Wrap" TextAlignment="Center" FontSize="14"/>
       
     </StackPanel>
   </Grid>
