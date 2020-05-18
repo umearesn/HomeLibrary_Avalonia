@@ -39,7 +39,6 @@ namespace HomeLibrary_Avalonia.ViewModels
 
             SaveChanges = ReactiveCommand.Create(() =>
             {
-                clicked++;
                 try
                 {
                     if (SettingsService.IsConnectionSectionAbsent)
@@ -70,8 +69,6 @@ namespace HomeLibrary_Avalonia.ViewModels
 
             });
         }
-
-        private int clicked = 0;
 
         private string coreUrl;
         public string CoreUrl
@@ -137,7 +134,7 @@ namespace HomeLibrary_Avalonia.ViewModels
             {
                 SettingsService.ApplyChanges();
             }
-            catch (Exception ex)
+            catch
             {
                 Status = $"Cannot apply changes: config file was changed from the outside.{Environment.NewLine}Please, restart the app!";
             }

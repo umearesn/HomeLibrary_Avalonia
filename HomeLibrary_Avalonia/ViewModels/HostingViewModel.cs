@@ -5,14 +5,10 @@ using System.Runtime.Serialization;
 
 namespace HomeLibrary_Avalonia.ViewModels
 {
-    [DataContract]
     public class HostingViewModel : ReactiveObject, IScreen
     {
-        public enum ButtonNames { GoSearching, GoLocal, GoSettings };
-
         private RoutingState _router = new RoutingState();
 
-        [DataMember]
         public RoutingState Router
         {
             get => _router;
@@ -29,9 +25,6 @@ namespace HomeLibrary_Avalonia.ViewModels
         {
             Router.Navigate.Execute(new SearchViewModel());
 
-            IsLocalActivated =
-                ElasticRepository.ConnectRepository() == "OK";
-
             GoSearching = ReactiveCommand.CreateFromObservable(
                 () => Router.Navigate.Execute(new SearchViewModel(this)));
 
@@ -42,11 +35,5 @@ namespace HomeLibrary_Avalonia.ViewModels
                 () => Router.Navigate.Execute(new SettingsViewModel(this)));
         }
 
-        private bool isLocalActivated;
-        public bool IsLocalActivated
-        {
-            get => isLocalActivated;
-            set => this.RaiseAndSetIfChanged(ref isLocalActivated, value);
-        }
     }
 }

@@ -6,37 +6,6 @@ namespace HomeLibrary_Avalonia.Services
 {
     public static class SettingsService
     {
-        /// <summary>
-        /// Checks the validity of app configuration.
-        /// </summary>
-        /// <returns>
-        /// First item - validity of Core settings.
-        /// Second item - validity of Elastic settings.
-        /// </returns>
-        public static (bool, bool) CheckConfigPresence()
-        {
-            bool elasticPresence = true;
-            try
-            {
-                string elasticHost = ConfigurationManager.ConnectionStrings["ElasticHost"].ConnectionString;
-                string elasticPort = ConfigurationManager.ConnectionStrings["ElasticPort"].ConnectionString;
-            }
-            catch (ConfigurationErrorsException)
-            {
-                elasticPresence = false;
-            }
-            bool corePresence = true;
-            try
-            {
-                string coreBaseUrl = ConfigurationManager.ConnectionStrings["CoreBaseUrl"].ConnectionString;
-                string coreApiKey = ConfigurationManager.ConnectionStrings["CoreApiKey"].ConnectionString;
-            }
-            catch (ConfigurationErrorsException)
-            {
-                corePresence = false;
-            }
-            return (corePresence, elasticPresence);
-        }
 
         private static Configuration config;
 

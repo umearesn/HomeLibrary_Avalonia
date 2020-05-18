@@ -11,11 +11,6 @@ namespace HomeLibrary_Avalonia.Repositories
     {
         private static HttpClient client = new HttpClient();
 
-        public Task<HttpResponseMessage> GetAllObjects(string request)
-        {
-            return client.GetAsync(request);
-        }
-
         public async Task<(string, ResponseBody<ArticleObject>)> GetArticlesAsync(string request)
         {
 

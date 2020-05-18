@@ -67,7 +67,7 @@ namespace HomeLibrary_Avalonia.ViewModels
                 searchResultSource.Clear();
                 if (responseMessage.Item2.Data != null)
                 {
-                    TotalHits = $"TotalHits:{responseMessage.Item2.TotalHits}.";
+                    Status = $"TotalHits:{responseMessage.Item2.TotalHits}.";
                     IsStatusEnabled = true;
                     foreach (var item in responseMessage.Item2.Data)
                     {
@@ -93,23 +93,23 @@ namespace HomeLibrary_Avalonia.ViewModels
                 }
                 else
                 {
-                    TotalHits = $"Failed to find any data!";
+                    Status = $"Failed to find any data!";
                     IsStatusEnabled = true;
                 }
             }
             else
             {
-                TotalHits = $"Search failed: {responseMessage.Item1}";
+                Status = $"Search failed: {responseMessage.Item1}";
                 IsStatusEnabled = true;
             }
         }
 
         // Status info
-        private string totalHits = null;
-        public string TotalHits
+        private string status = null;
+        public string Status
         {
-            get => totalHits;
-            set => this.RaiseAndSetIfChanged(ref totalHits, value);
+            get => status;
+            set => this.RaiseAndSetIfChanged(ref status, value);
         }
 
         // Should status be active
@@ -134,13 +134,6 @@ namespace HomeLibrary_Avalonia.ViewModels
             set => this.RaiseAndSetIfChanged(ref isNavigationEnabled, value);
         }
 
-        private bool isNavigationBackEnabled = false;
-        public bool IsNavigationBackEnabled
-        {
-            get => isNavigationBackEnabled;
-            set => this.RaiseAndSetIfChanged(ref isNavigationBackEnabled, value);
-        }
-
         private bool isNavigationForwardEnabled = true;
         public bool IsNavigationForwardEnabled
         {
@@ -148,7 +141,12 @@ namespace HomeLibrary_Avalonia.ViewModels
             set => this.RaiseAndSetIfChanged(ref isNavigationForwardEnabled, value);
         }
 
-        public CoreRepository repo = new CoreRepository();
+        private bool isNavigationBackEnabled = false;
+        public bool IsNavigationBackEnabled
+        {
+            get => isNavigationBackEnabled;
+            set => this.RaiseAndSetIfChanged(ref isNavigationBackEnabled, value);
+        }
 
         // Results
 

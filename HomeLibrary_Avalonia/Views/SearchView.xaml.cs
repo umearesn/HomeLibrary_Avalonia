@@ -3,7 +3,6 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using HomeLibrary_Avalonia.ViewModels;
 using ReactiveUI;
-using System.Collections.Generic;
 using System.Reactive.Disposables;
 
 namespace HomeLibrary_Avalonia.Views
@@ -12,19 +11,17 @@ namespace HomeLibrary_Avalonia.Views
     {
         private TextBlock searchStatus;
 
+        private ListBox searchResultList;
+
+        private Button startSearch;
+
         private StackPanel navigationPanel;
         private Button prevPage;
-
-        private TextBox titleQuery;
-
-        // Authors adding block
-        private TextBox authorsQuery;
-
         private TextBlock curPage;
         private Button nextPage;
 
-        private Button startSearch;
-        private ListBox searchResultList;
+        private TextBox titleQuery;
+        private TextBox authorsQuery;
 
         public SearchView()
         {
@@ -58,7 +55,7 @@ namespace HomeLibrary_Avalonia.Views
 
                 this.OneWayBind(
                     ViewModel,
-                    vm => vm.TotalHits,
+                    vm => vm.Status,
                     v => v.searchStatus.Text,
                     value => value)
                 .DisposeWith(disposables);
@@ -141,26 +138,6 @@ namespace HomeLibrary_Avalonia.Views
 
             });
 
-        }
-
-        public string ToAuthorsQuery(IEnumerable<string> authorsQuery)
-        {
-            string res = "Entered authors: ";
-            if (authorsQuery != null)
-            {
-                foreach (var item in authorsQuery)
-                {
-                    res += $"{item},";
-                }
-            }
-            return res.Substring(0, res.Length - 1);
-        }
-
-        public List<string> FromAuthorsQuery(string stringedAuthors)
-        {
-            var res = new List<string>(stringedAuthors.Split(':')[1].Trim().Split(','));
-            res.ForEach(x => x.Trim());
-            return res;
         }
     }
 }

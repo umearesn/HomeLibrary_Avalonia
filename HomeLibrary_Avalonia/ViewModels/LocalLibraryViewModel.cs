@@ -142,20 +142,6 @@ namespace HomeLibrary_Avalonia.ViewModels
             set => this.RaiseAndSetIfChanged(ref currentPage, value);
         }
 
-        private int pagesInTotal;
-        public int PagesInTotal
-        {
-            get => pagesInTotal;
-            set => this.RaiseAndSetIfChanged(ref pagesInTotal, (TotalHits + _amount - 1) / _amount);
-        }
-
-        private int totalHits;
-        public int TotalHits
-        {
-            get => totalHits;
-            set => this.RaiseAndSetIfChanged(ref totalHits, value);
-        }
-
         // Results
         public ReadOnlyObservableCollection<ArticleViewModel> localArticles;
 
@@ -189,9 +175,8 @@ namespace HomeLibrary_Avalonia.ViewModels
             {
                 localArticlesSource.Remove(articleVM);
                 int startIndex = (CurrentPage - 2) * 10;
-                List<ArticleObject> response //= await ElasticRepository.SearchArticlesAsync();
+                List<ArticleObject> response 
                     = await DatabaseService.SearchAsync(currentTitle, currentAuthors, currentFulltext, startIndex, _amount + 1);
-                //LoadArticlesAsync((CurrentPage - 2) * 10, _amount, false);
                 DisplayLoaded(response, CurrentPage - 1, _amount);
                 IsNavigationForwardEnabled = false;
 
@@ -201,8 +186,6 @@ namespace HomeLibrary_Avalonia.ViewModels
                 int startIndex = CurrentPage * 10;
                 var response
                     = await DatabaseService.SearchAsync(currentTitle, currentAuthors, currentFulltext, startIndex, 2);
-                //LoadArticlesAsync((CurrentPage - 2) * 10, _amount, false);
-                //DisplayLoaded(response, CurrentPage, 1);
                 if (response != null && response.Count > 0)
                 {
                     localArticlesSource.Remove(articleVM);

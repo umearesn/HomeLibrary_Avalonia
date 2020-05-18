@@ -14,7 +14,7 @@ namespace HomeLibrary_Avalonia.ViewModels
 {
     public class ArticleViewModel : ReactiveObject
     {
-        private LocalLibraryViewModel _masterLibrary = null;
+        private LocalLibraryViewModel masterLibrary = null;
 
         public ArticleObject Article { get; }
 
@@ -45,12 +45,12 @@ namespace HomeLibrary_Avalonia.ViewModels
 
         public ReactiveCommand<Unit, Unit> OpenFile { get; }
 
-        public ArticleViewModel(ArticleObject article, LocalLibraryViewModel masterLibrary = null)
+        public ArticleViewModel(ArticleObject article, LocalLibraryViewModel parentLibrary = null)
         {
             Article = article;
             PdfPath = article.PdfPath;
-            _masterLibrary = masterLibrary;
-            if (masterLibrary != null || !Directory.Exists(SettingsService.GetDirectoryInfo()))
+            masterLibrary = parentLibrary;
+            if (parentLibrary != null || !Directory.Exists(SettingsService.GetDirectoryInfo()))
             {
                 CanBeAdded = false;
             }
@@ -74,13 +74,20 @@ namespace HomeLibrary_Avalonia.ViewModels
                 if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
                 {
                     ArticleObject article = responseMessage.Item2.Data[0];
-
+                    using(var sw = new StreamWriter("LOOKHERE.txt", true))
+                    {
+                        sw.WriteLine($"{DateTime.Now} -- clicked {Article.Title}, {Article.DownloadUrl}");
+                    }
                     string loadingLink = article.DownloadUrl;
 
                     if (loadingLink != null)
                     {
                         article.PdfPath = GetName(article, IsCoreLink(loadingLink));
                         PdfPath = article.PdfPath;
+                        using (var sw = new StreamWriter("LOOKHERE.txt", true))
+                        {
+                            sw.WriteLine($"{DateTime.Now} -- clicked {Article.Title}, {PdfPath}");
+                        }
                         try
                         {
                             LoadPdf(article);
@@ -90,6 +97,11 @@ namespace HomeLibrary_Avalonia.ViewModels
                             article.PdfPath = "Failed to save!";
                             PdfPath = article.PdfPath;
                         }
+                    }
+
+                    using (var sw = new StreamWriter("LOOKHERE.txt", true))
+                    {
+                        sw.WriteLine($"{DateTime.Now} -- before put.");
                     }
 
                     await ElasticRepository.PutArticleAsync(article);
@@ -141,7 +153,7 @@ namespace HomeLibrary_Avalonia.ViewModels
                     }
                     catch { }
                 }
-                await _masterLibrary.RemoveAndUpdateList(this);
+                await masterLibrary.RemoveAndUpdateList(this);
             });
 
             OpenFile = ReactiveCommand.Create(() =>

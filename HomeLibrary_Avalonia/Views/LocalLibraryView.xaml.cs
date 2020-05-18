@@ -29,8 +29,6 @@ namespace HomeLibrary_Avalonia.Views
         {
             AvaloniaXamlLoader.Load(this);
 
-            // For fonts debug - doesn't work by the moment
-            //string[] a = typeof(LocalLibraryView).Assembly.GetManifestResourceNames();
             startSearch = this.Find<Button>("StartSearch");
 
             titleField = this.Find<TextBox>("TitleField");

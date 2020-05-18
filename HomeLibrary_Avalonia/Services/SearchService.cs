@@ -9,7 +9,7 @@ namespace HomeLibrary_Avalonia.Services
 
     static class SearchService
     {
-        static public CoreRepository repo = new CoreRepository();
+        static private CoreRepository repo = new CoreRepository();
 
         static public string BuildRequest(string url, string apikey,
             SearchMode mode, int page = 1, string title = null, IEnumerable<string> authors = null)

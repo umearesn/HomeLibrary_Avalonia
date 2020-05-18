@@ -60,75 +60,10 @@ namespace Network
             return this;
         }
 
-        public GetRequest SetDescription(string description)
-        {
-            queryArgs.Add($"description:{description}");
-            return this;
-        }
-
-        public GetRequest SetText(string fullText)
-        {
-            queryArgs.Add($"fullText:{fullText}");
-            return this;
-        }
-
         public GetRequest SetAuthors(List<string> authors)
         {
             queryArgs.Add(ArgumentsCombiner("authors", authors));
             return this;
-        }
-
-        public GetRequest SetPublisher(List<string> publisher)
-        {
-            queryArgs.Add(ArgumentsCombiner("publisher", publisher));
-            return this;
-        }
-
-        public GetRequest SetRepoId(List<string> repoId)
-        {
-            queryArgs.Add(ArgumentsCombiner("repositories.id", repoId));
-            return this;
-        }
-
-        public GetRequest SetRepoName(List<string> repoName)
-        {
-            queryArgs.Add(ArgumentsCombiner("repositories.name", repoName));
-            return this;
-        }
-
-        public GetRequest SetDoi(string doi)
-        {
-            queryArgs.Add($"doi:{doi}");
-            return this;
-        }
-
-        public GetRequest SetOai(string oai)
-        {
-            queryArgs.Add($"oai:{oai}");
-            return this;
-        }
-
-        public GetRequest SetIdentifiers(List<string> identifiers)
-        {
-            queryArgs.Add(ArgumentsCombiner("identifiers", identifiers));
-            return this;
-        }
-
-        public GetRequest SetLanguage(List<string> language)
-        {
-            queryArgs.Add(ArgumentsCombiner("language", language));
-            return this;
-        }
-
-        public GetRequest SetYear(List<int> year)
-        {
-            List<string> syears = new List<string>();
-            foreach (var elem in year)
-            {
-                syears.Add(elem.ToString());
-            }
-            queryArgs.Add(ArgumentsCombiner("year", syears));
-            return this; ;
         }
     }
 }

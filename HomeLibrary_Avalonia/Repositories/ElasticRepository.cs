@@ -3,6 +3,7 @@ using HomeLibrary_Avalonia.Services;
 using Nest;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace HomeLibrary_Avalonia.Repositories
@@ -179,7 +180,7 @@ namespace HomeLibrary_Avalonia.Repositories
             return new List<ArticleObject>(searchResults.Documents);
         }
 
-        private static void DeleteArticle(string id)
+        public static void DeleteArticleId(string id)
         {
             elasticClient.DeleteByQuery<ArticleObject>(q => q.
                 Index("articles")
@@ -190,11 +191,6 @@ namespace HomeLibrary_Avalonia.Repositories
                     )
                 )
             );
-        }
-
-        public static void DeleteArticleId(string id)
-        {
-            DeleteArticle(id);
         }
 
     }
