@@ -74,20 +74,12 @@ namespace HomeLibrary_Avalonia.ViewModels
                 if (responseMessage.Item1 == HttpStatusCode.OK.ToString())
                 {
                     ArticleObject article = responseMessage.Item2.Data[0];
-                    using(var sw = new StreamWriter("LOOKHERE.txt", true))
-                    {
-                        sw.WriteLine($"{DateTime.Now} -- clicked {Article.Title}, {Article.DownloadUrl}");
-                    }
                     string loadingLink = article.DownloadUrl;
 
                     if (loadingLink != null)
                     {
                         article.PdfPath = GetName(article, IsCoreLink(loadingLink));
                         PdfPath = article.PdfPath;
-                        using (var sw = new StreamWriter("LOOKHERE.txt", true))
-                        {
-                            sw.WriteLine($"{DateTime.Now} -- clicked {Article.Title}, {PdfPath}");
-                        }
                         try
                         {
                             LoadPdf(article);
@@ -98,12 +90,6 @@ namespace HomeLibrary_Avalonia.ViewModels
                             PdfPath = article.PdfPath;
                         }
                     }
-
-                    using (var sw = new StreamWriter("LOOKHERE.txt", true))
-                    {
-                        sw.WriteLine($"{DateTime.Now} -- before put.");
-                    }
-
                     await ElasticRepository.PutArticleAsync(article);
                 }
                 else
